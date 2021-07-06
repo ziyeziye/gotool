@@ -59,7 +59,7 @@ func (r *Response) Cookies() []*http.Cookie {
 
 func (r *Response) Body() ([]byte, error) {
 	if r == nil {
-		return []byte{}, errors.New("HttpRequest.Response is nil.")
+		return []byte{}, errors.New("gotool.HttpUtils.Response is nil.")
 	}
 
 	defer r.resp.Body.Close()

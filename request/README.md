@@ -1,25 +1,28 @@
 HttpUtils
 =======
-A simple `HTTP Request` package for golang. `GET` `POST` `DELETE` `PUT`
+
+golang 的一个简单的“HTTP 请求”包 `GET` `POST` `DELETE` `PUT`
 
 
 
-### Installation
-go get github.com/kirinlabs/HttpRequest
+### 安装
+go get github.com/druidcaesa/gotool
+
+go.mod github.com/druidcaesa/gotool
 
 
-### How do we use HttpRequest?
+### 我们如何使用HttpUtils？
 
-#### Create request object use http.DefaultTransport
+#### 使用 http.DefaultTransport 创建请求对象
 ```go
-resp, err := HttpRequest.Get("http://127.0.0.1:8000")
-resp, err := HttpRequest.SetTimeout(5).Get("http://127.0.0.1:8000")
-resp, err := HttpRequest.Debug(true).SetHeaders(map[string]string{}).Get("http://127.0.0.1:8000")
+resp, err := gotool.HttpUtils.Get("http://127.0.0.1:8000")
+resp, err := gotool.HttpUtils.SetTimeout(5).Get("http://127.0.0.1:8000")
+resp, err := gotool.HttpUtils.Debug(true).SetHeaders(map[string]string{}).Get("http://127.0.0.1:8000")
 
 OR
 
-req := HttpRequest.NewRequest()
-req := HttpRequest.NewRequest().Debug(true).SetTimeout(5)
+req := gotool.HttpUtils.NewRequest()
+req := gotool.HttpUtils.NewRequest().Debug(true).SetTimeout(5)
 resp, err := req.Get("http://127.0.0.1:8000")
 resp, err := req.Get("http://127.0.0.1:8000",nil)
 resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest")
@@ -27,7 +30,7 @@ resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest","address=be
 
 ```
 
-#### Set headers
+#### 设置请求头
 ```go
 req.SetHeaders(map[string]string{
     "Content-Type": "application/x-www-form-urlencoded",
@@ -39,7 +42,7 @@ req.SetHeaders(map[string]string{
 })
 ```
 
-#### Set cookies
+#### 设置Cookies
 ```go
 req.SetCookies(map[string]string{
     "name":"json",
@@ -48,76 +51,32 @@ req.SetCookies(map[string]string{
 
 OR
 
-HttpRequest.SetCookies(map[string]string{
+gotool.HttpUtils.SetCookies(map[string]string{
     "age":"19",
 }).Post()
 ```
 
-#### Set basic auth
-```go
-req.SetBasicAuth("username","password")
-```
 
-#### Set timeout
+#### 设置超时时间
 ```go
 req.SetTimeout(5)  //default 30s
 ```
 
-#### Transport
-If you want to customize the Client object and reuse TCP connections, you need to define a global http.RoundTripper or & http.Transport, because the reuse of the http connection pool is based on Transport.
+#### 面向对象的操作模式
 ```go
-var transport *http.Transport
-func init() {   
-    transport = &http.Transport{
-        DialContext: (&net.Dialer{
-            Timeout:   30 * time.Second,
-            KeepAlive: 30 * time.Second,
-            DualStack: true,
-        }).DialContext,
-        MaxIdleConns:          100, 
-        IdleConnTimeout:       90 * time.Second,
-        TLSHandshakeTimeout:   5 * time.Second,
-        ExpectContinueTimeout: 1 * time.Second,
-    }
-}
-
-func demo(){
-    // Use http.DefaultTransport
-    res, err := HttpRequest.Get("http://127.0.0.1:8080")
-    // Use custom Transport
-    res, err := HttpRequest.Transport(transport).Get("http://127.0.0.1:8080")
-}
-```
-
-#### Keep Alives，Only effective for custom Transport
-```go
-req.DisableKeepAlives(false)
-
-HttpRequest.Transport(transport).DisableKeepAlives(false).Get("http://127.0.0.1:8080")
-```
-
-#### Ignore Https certificate validation，Only effective for custom Transport
-```go
-req.SetTLSClient(&tls.Config{InsecureSkipVerify: true})
-
-HttpRequest.Transport(transport).SetTLSClient(&tls.Config{InsecureSkipVerify: true}).Get("http://127.0.0.1:8080")
-```
-
-#### Object-oriented operation mode
-```go
-req := HttpRequest.NewRequest().
+req := gotool.HttpUtils.NewRequest().
 	Debug(true).
 	SetHeaders(map[string]string{
 	    "Content-Type": "application/x-www-form-urlencoded",
 	}).SetTimeout(5)
 resp,err := req.Get("http://127.0.0.1")
 
-resp,err := HttpRequest.NewRequest().Get("http://127.0.0.1")
+resp,err := gotool.HttpUtils.NewRequest().Get("http://127.0.0.1")
 ```
 
 ### GET
 
-#### Query parameter
+#### 查询参数
 ```go
 resp, err := req.Get("http://127.0.0.1:8000")
 resp, err := req.Get("http://127.0.0.1:8000",nil)
@@ -126,12 +85,12 @@ resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest","address=be
 
 OR
 
-resp, err := HttpRequest.Get("http://127.0.0.1:8000")
-resp, err := HttpRequest.Debug(true).SetHeaders(map[string]string{}).Get("http://127.0.0.1:8000")
+resp, err := gotool.HttpUtils.Get("http://127.0.0.1:8000")
+resp, err := gotool.HttpUtils.Debug(true).SetHeaders(map[string]string{}).Get("http://127.0.0.1:8000")
 ```
 
 
-#### Multi parameter
+#### 多参数
 ```go
 resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest",map[string]interface{}{
     "name":  "jason",
@@ -152,24 +111,24 @@ return string(body)
 
 ```go
 // Send nil
-resp, err := HttpRequest.Post("http://127.0.0.1:8000")
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000")
 
 // Send integer
-resp, err := HttpRequest.Post("http://127.0.0.1:8000", 100)
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000", 100)
 
 // Send []byte
-resp, err := HttpRequest.Post("http://127.0.0.1:8000", []byte("bytes data"))
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000", []byte("bytes data"))
 
 // Send io.Reader
-resp, err := HttpRequest.Post("http://127.0.0.1:8000", bytes.NewReader(buf []byte))
-resp, err := HttpRequest.Post("http://127.0.0.1:8000", strings.NewReader("string data"))
-resp, err := HttpRequest.Post("http://127.0.0.1:8000", bytes.NewBuffer(buf []byte))
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000", bytes.NewReader(buf []byte))
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000", strings.NewReader("string data"))
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000", bytes.NewBuffer(buf []byte))
 
 // Send string
-resp, err := HttpRequest.Post("http://127.0.0.1:8000", "title=github&type=1")
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000", "title=github&type=1")
 
 // Send JSON
-resp, err := HttpRequest.JSON().Post("http://127.0.0.1:8000", "{\"id\":10,\"title\":\"HttpRequest\"}")
+resp, err := gotool.HttpUtils.JSON().Post("http://127.0.0.1:8000", "{\"id\":10,\"title\":\"HttpRequest\"}")
 
 // Send map[string]interface{}{}
 resp, err := req.Post("http://127.0.0.1:8000", map[string]interface{}{
@@ -184,37 +143,19 @@ if err != nil {
 }
 return string(body)
 
-resp, err := HttpRequest.Post("http://127.0.0.1:8000")
-resp, err := HttpRequest.JSON().Post("http://127.0.0.1:8000",map[string]interface{}{"title":"github"})
-resp, err := HttpRequest.Debug(true).SetHeaders(map[string]string{}).JSON().Post("http://127.0.0.1:8000","{\"title\":\"github\"}")
+resp, err := gotool.HttpUtils.Post("http://127.0.0.1:8000")
+resp, err := gotool.HttpUtils.JSON().Post("http://127.0.0.1:8000",map[string]interface{}{"title":"github"})
+resp, err := gotool.HttpUtils.Debug(true).SetHeaders(map[string]string{}).JSON().Post("http://127.0.0.1:8000","{\"title\":\"github\"}")
 ```
 
-### Jar
-```go
-j, _ := cookiejar.New(nil)
-j.SetCookies(&url.URL{
-	Scheme: "http",
-	Host:   "127.0.0.1:8000",
-}, []*http.Cookie{
-	&http.Cookie{Name: "identity-user", Value: "83df5154d0ed31d166f5c54ddc"},
-	&http.Cookie{Name: "token_id", Value: "JSb99d0e7d809610186813583b4f802a37b99d"},
-})
-resp, err := HttpRequest.Jar(j).Get("http://127.0.0.1:8000/city/list")
-defer resp.Close()
-
-if err != nil {
-	log.Fatalf("Request error：%v", err.Error())
-}
-```
-
-### Proxy
+### 代理模式
 ```go
 proxy, err := url.Parse("http://proxyip:proxyport")
 if err != nil {
 	log.Println(err)
 }
 
-resp, err := HttpRequest.Proxy(http.ProxyURL(proxy)).Get("http://127.0.0.1:8000/ip")
+resp, err := gotool.HttpUtils.Proxy(http.ProxyURL(proxy)).Get("http://127.0.0.1:8000/ip")
 defer resp.Close()
 
 if err != nil {
@@ -228,7 +169,7 @@ if err != nil {
 log.Println(string(body))
 ```
 
-### Upload
+### 上传文件
 Params: url, filename, fileinput
 
 ```go
@@ -242,14 +183,14 @@ return string(body)
 ```
 
 
-### Debug
-#### Default false
+### 提示模式
+#### 默认 false
 
 ```go
 req.Debug(true)
 ```
 
-#### Print in standard output：
+#### 以标准输出打印：
 ```go
 [HttpRequest]
 -------------------------------------------------------------------
@@ -263,9 +204,9 @@ ReqBody: map[age:19 score:100]
 
 
 ## Json
-Post JSON request
+Post JSON 请求
 
-#### Set header
+#### 设置请求头
 ```go
  req.SetHeaders(map[string]string{"Content-Type": "application/json"})
 ```
@@ -279,7 +220,7 @@ req.JSON().Post("http://127.0.0.1:8000", map[string]interface{}{
 req.JSON().Post("http://127.0.0.1:8000", "{\"title\":\"github\",\"id\":10}")
 ```
 
-#### Post request
+#### Post 请求
 ```go
 resp, err := req.Post("http://127.0.0.1:8000", map[string]interface{}{
     "id":    10,
@@ -287,7 +228,7 @@ resp, err := req.Post("http://127.0.0.1:8000", map[string]interface{}{
 })
 ```
 
-#### Print formatted JSON
+#### 打印格式化的 JSON
 ```go
 str, err := resp.Export()
 if err != nil {
@@ -295,7 +236,7 @@ if err != nil {
 }
 ```
 
-#### Unmarshal JSON
+#### 解组 JSON
 ```go
 var u User
 err := resp.Json(&u)
@@ -308,121 +249,4 @@ err := resp.Json(&m)
 if err != nil {
    return err
 }
-```
-
-### Response
-
-#### Response() *http.Response
-```go
-resp, err := req.Post("http://127.0.0.1:8000/") //res is a http.Response object
-```
-
-#### StatusCode() int
-```go
-resp.StatusCode()
-```
-
-#### Body() ([]byte, error)
-```go
-body, err := resp.Body()
-log.Println(string(body))
-```
-
-#### Close() error
-```go
-resp.Close()
-```
-
-#### Time() string
-```go
-resp.Time()  //ms
-```
-
-#### Print formatted JSON
-```go
-str, err := resp.Export()
-if err != nil {
-   return
-}
-```
-
-#### Unmarshal JSON
-```go
-var u User
-err := resp.Json(&u)
-if err != nil {
-   return err
-}
-
-var m map[string]interface{}
-err := resp.Json(&m)
-if err != nil {
-   return err
-}
-```
-
-#### Url() string
-```go
-resp.Url()  //return the requested url
-```
-
-#### Headers() http.Header
-```go
-resp.Headers()  //return the response headers
-resp.Headers().Get("Content-Type")
-```
-
-#### Cookies() []*http.Cookie
-```go
-resp.Cookies()  //return the response cookies
-```
-
-### Advanced
-#### GET
-```go
-import "github.com/kirinlabs/HttpRequest"
-   
-resp,err := HttpRequest.Get("http://127.0.0.1:8000/")
-resp,err := HttpRequest.Get("http://127.0.0.1:8000/","title=github")
-resp,err := HttpRequest.Get("http://127.0.0.1:8000/?title=github")
-resp,err := HttpRequest.Debug(true).JSON().Get("http://127.0.0.1:8000/")
-```
-
-#### POST
-```go
-import "github.com/kirinlabs/HttpRequest"
-   
-resp,err := HttpRequest.Post("http://127.0.0.1:8000/")
-resp,err := HttpRequest.SetHeaders(map[string]string{
-	"title":"github",
-}).Post("http://127.0.0.1:8000/")
-resp,err := HttpRequest.Debug(true).JSON().Post("http://127.0.0.1:8000/")
-```
-
-
-### Example
-```go
-import "github.com/kirinlabs/HttpRequest"
-   
-resp,err := HttpRequest.Get("http://127.0.0.1:8000/")
-resp,err := HttpRequest.Get("http://127.0.0.1:8000/","title=github")
-resp,err := HttpRequest.Get("http://127.0.0.1:8000/?title=github")
-resp,err := HttpRequest.Get("http://127.0.0.1:8000/",map[string]interface{}{
-	"title":"github",
-})
-resp,err := HttpRequest.Debug(true).JSON().SetHeaders(map[string]string{
-	"source":"api",
-}).SetCookies(map[string]string{
-	"name":"httprequest",
-}).Post("http://127.0.0.1:8000/")
-
-
-//Or
-req := HttpRequest.NewRequest()
-req := req.Debug(true).SetHeaders()
-resp,err := req.Debug(true).JSON().SetHeaders(map[string]string{
-    "source":"api",
-}).SetCookies(map[string]string{
-    "name":"httprequest",
-}).Post("http://127.0.0.1:8000/")
 ```
