@@ -1,0 +1,30 @@
+package gotool
+
+import (
+	"github.com/druidcaesa/gotool/array"
+	"github.com/druidcaesa/gotool/bcrypt"
+	"github.com/druidcaesa/gotool/convert"
+	"github.com/druidcaesa/gotool/date"
+	"github.com/druidcaesa/gotool/logs"
+	"github.com/druidcaesa/gotool/page"
+	"github.com/druidcaesa/gotool/request"
+	"github.com/druidcaesa/gotool/str"
+)
+
+// @Title tool
+// @Description A simple, semantic and developer-friendly Golang tool development set
+// @Page github.com/druidcaesa/gotool
+// @Version v0.0.1
+// @Author druidcaesa
+// @Email hbsjzfynxm@gmail.com
+
+var (
+	StrArrayUtils array.StrArray    //String 数据工具声明
+	Logs          logs.Logs         //log日志声明
+	BcryptUtils   bcrypt.BcryptUtil //加密工具声明
+	DateUtil      date.Date         //时间操作
+	StrUtils      str.StrUtils      //字符串操作
+	HttpUtils     request.Request   //http工具
+	ConvertUtils  convert.Convert   //公历转农历相关操作
+	PageUtils     page.Page         //分页插件
+)
