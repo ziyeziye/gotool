@@ -1,6 +1,7 @@
 package bcrypt
 
 import (
+	"crypto"
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/rand"
@@ -12,9 +13,9 @@ import (
 	"encoding/hex"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"github.com/druidcaesa/gotool/logs"
 	"golang.org/x/crypto/bcrypt"
-	"io"
 )
 
 type BcryptUtil struct {
@@ -41,14 +42,12 @@ func (b *BcryptUtil) CompareHash(dbPassword string, loginPassword string) bool {
 }
 
 // MD5 md5签名  signature
-func (b *BcryptUtil) MD5(s string) (string, error) {
-	hash := md5.New()
-	_, err := io.WriteString(hash, s)
-	if err != nil {
-		b.logs.ErrorLog().Println(err)
-		return "", err
-	}
-	return s, err
+func (b *BcryptUtil) MD5(s string) string {
+	data := []byte(s)
+	md5Ctx := md5.New()
+	md5Ctx.Write(data)
+	cipherStr := md5Ctx.Sum(nil)
+	return hex.EncodeToString(cipherStr)
 }
 
 // SHA1 sha1加密 encryption
@@ -68,33 +67,113 @@ func (b *BcryptUtil) ComputeHmacSha256(message string, secret string) string {
 	return base64.StdEncoding.EncodeToString([]byte(sha))
 }
 
-// RsaEncrypt encryption
-//@param origData Encrypted byte array
-//@param publicKey Public key
-func (b *BcryptUtil) RsaEncrypt(origData []byte, publicKey []byte) ([]byte, error) {
-	block, _ := pem.Decode(publicKey) //将密钥解析成公钥实例
-	if block == nil {
-		return nil, errors.New("public key error")
-	}
-	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes) //解析pem.Decode（）返回的Block指针实例
+// GenRsaKey RSA公钥私钥产生
+func (b *BcryptUtil) GenRsaKey() (prvkey, pubkey []byte) {
+	// 生成私钥文件
+	privateKey, err := rsa.GenerateKey(rand.Reader, 1024)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	pub := pubInterface.(*rsa.PublicKey)
-	return rsa.EncryptPKCS1v15(rand.Reader, pub, origData) //RSA算法加密
+	derStream := x509.MarshalPKCS1PrivateKey(privateKey)
+	block := &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: derStream,
+	}
+	prvkey = pem.EncodeToMemory(block)
+	publicKey := &privateKey.PublicKey
+	derPkix, err := x509.MarshalPKIXPublicKey(publicKey)
+	if err != nil {
+		panic(err)
+	}
+	block = &pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: derPkix,
+	}
+	pubkey = pem.EncodeToMemory(block)
+	return
 }
 
-// RsaDecrypt Decrypt
-//@param ciphertext Decrypt byte array
-//@param privateKey Private key
-func (b *BcryptUtil) RsaDecrypt(ciphertext []byte, privateKey []byte) ([]byte, error) {
-	block, _ := pem.Decode(privateKey) //将密钥解析成私钥实例
+// RsaSignWithSha256 签名
+func (b *BcryptUtil) RsaSignWithSha256(data []byte, keyBytes []byte) []byte {
+	h := sha256.New()
+	h.Write(data)
+	hashed := h.Sum(nil)
+	block, _ := pem.Decode(keyBytes)
 	if block == nil {
-		return nil, errors.New("private key error!")
+		panic(errors.New("private key error"))
 	}
-	priv, err := x509.ParsePKCS1PrivateKey(block.Bytes) //解析pem.Decode（）返回的Block指针实例
+	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
-		return nil, err
+		fmt.Println("ParsePKCS8PrivateKey err", err)
+		panic(err)
 	}
-	return rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext) //RSA算法解密
+
+	signature, err := rsa.SignPKCS1v15(rand.Reader, privateKey, crypto.SHA256, hashed)
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
+		panic(err)
+	}
+
+	return signature
+}
+
+// RsaVerySignWithSha256 验证
+func (b *BcryptUtil) RsaVerySignWithSha256(data, signData, keyBytes []byte) bool {
+	block, _ := pem.Decode(keyBytes)
+	if block == nil {
+		panic(errors.New("public key error"))
+	}
+	pubKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		panic(err)
+	}
+
+	hashed := sha256.Sum256(data)
+	err = rsa.VerifyPKCS1v15(pubKey.(*rsa.PublicKey), crypto.SHA256, hashed[:], signData)
+	if err != nil {
+		panic(err)
+	}
+	return true
+}
+
+// RsaEncrypt 公钥加密
+func (b *BcryptUtil) RsaEncrypt(data, keyBytes []byte) []byte {
+	//解密pem格式的公钥
+	block, _ := pem.Decode(keyBytes)
+	if block == nil {
+		panic(errors.New("public key error"))
+	}
+	// 解析公钥
+	pubInterface, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		panic(err)
+	}
+	// 类型断言
+	pub := pubInterface.(*rsa.PublicKey)
+	//加密
+	ciphertext, err := rsa.EncryptPKCS1v15(rand.Reader, pub, data)
+	if err != nil {
+		panic(err)
+	}
+	return ciphertext
+}
+
+// RsaDecrypt 私钥解密
+func (b *BcryptUtil) RsaDecrypt(ciphertext, keyBytes []byte) []byte {
+	//获取私钥
+	block, _ := pem.Decode(keyBytes)
+	if block == nil {
+		panic(errors.New("private key error!"))
+	}
+	//解析PKCS1格式的私钥
+	priv, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if err != nil {
+		panic(err)
+	}
+	// 解密
+	data, err := rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext)
+	if err != nil {
+		panic(err)
+	}
+	return data
 }

@@ -63,8 +63,8 @@ func (u *StrUtils) Replace(s, old, new string, n int) string {
 	return b.String()
 }
 
-// It is to give some strings and return true if there are empty ones, which is often used to judge whether many fields are empty
-func (*StrUtils) hasEmpty(s string) bool {
+// HasEmpty It is to give some strings and return true if there are empty ones, which is often used to judge whether many fields are empty
+func (*StrUtils) HasEmpty(s string) bool {
 	if s == "" || len(s) == 0 {
 		return true
 	}
@@ -74,19 +74,19 @@ func (*StrUtils) hasEmpty(s string) bool {
 // RemoveSuffix 去掉文件扩展名，直接获取文件名称
 //Remove the file extension and get the file name directly
 func (u *StrUtils) RemoveSuffix(str string) (string, error) {
-	if u.hasEmpty(str) {
+	if u.HasEmpty(str) {
 		return "", errors.New("Parameter  is an empty string")
 	}
 	filenameWithSuffix := path.Base(str)
 	fileSuffix := path.Ext(filenameWithSuffix)
-	filenameOnly := strings.TrimSuffix(str, fileSuffix)
+	filenameOnly := strings.TrimSuffix(filenameWithSuffix, fileSuffix)
 	return filenameOnly, nil
 }
 
 // GetSuffix 获取文件扩展名
 // Get file extension
 func (u *StrUtils) GetSuffix(str string) (string, error) {
-	if u.hasEmpty(str) {
+	if u.HasEmpty(str) {
 		return "", errors.New("Parameter  is an empty string")
 	}
 	filenameWithSuffix := path.Base(str)

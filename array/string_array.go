@@ -23,7 +23,7 @@ func (sa *StrArray) StringToInt64(s []string) ([]int64, error) {
 	return int64s, nil
 }
 
-// StringToInt32 String array to int63 array
+// StringToInt32 String array to int32 array
 func (sa *StrArray) StringToInt32(s []string) ([]int32, error) {
 	int32s := make([]int32, len(s))
 	for i, item := range s {
