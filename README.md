@@ -27,12 +27,15 @@ func TestStringReplacePlaceholder(t *testing.T) {
 s := "你是我的{},我是你的{}"
 placeholder, err := gotool.StrUtils.ReplacePlaceholder(s, "唯一", "所有")
 if err == nil {
-fmt.Println(placeholder)
+    fmt.Println(placeholder)
+    }
 }
-}
+//out
+=== RUN   TestStringReplacePlaceholder
+你是我的唯一,我是你的所有
+--- PASS: TestStringReplacePlaceholder (0.00s)
+PASS
 ```
-
-![img.png](readme/img.png)
 
 #### gotool.StrUtils.RemoveSuffix 去除文件扩展名获取文件名
 
@@ -45,9 +48,14 @@ fullFilename = "/root/home/test.txt"
 suffix, _ = gotool.StrUtils.RemoveSuffix(fullFilename)
 fmt.Println(suffix)
 }
+//out
+=== RUN   TestRemoveSuffix
+test
+test
+--- PASS: TestRemoveSuffix (0.00s)
+PASS
 ```
 
-![img_1.png](readme/img_1.png)
 
 #### gotool.StrUtils.GetSuffix 获取文件扩展名
 
@@ -60,9 +68,13 @@ fullFilename = "/root/home/test.txt"
 suffix, _ = gotool.StrUtils.GetSuffix(fullFilename)
 fmt.Println(suffix)
 }
+//out
+=== RUN   TestGetSuffix
+.txt
+.txt
+--- PASS: TestGetSuffix (0.00s)
+PASS
 ```
-
-![img.png](../readme/img3.png
 
 #### gotool.StrUtils.HasEmpty 判断字符串是否未空，我空返回ture
 
@@ -75,9 +87,14 @@ str = "11111"
 empty = gotool.StrUtils.HasEmpty(str)
 fmt.Println(empty)
 }
-```
+//out
+=== RUN   TestHasStr
+true
+false
+--- PASS: TestHasStr (0.00s)
+PASS
 
-![img.png](readme/img4.png)
+```
 
 DateUtil
 =======
@@ -94,9 +111,15 @@ toString = gotool.DateUtil.FormatToString(&now, "YYYYMMDD hhmmss")
 fmt.Println(toString)
 }
 //年月日对应YYYY MM DD 时分秒 hhmmss 可进行任意组合 比如 YYYY  hh   YYYY-DD hh:mm 等
+//out
+=== RUN   TestFormatToString
+2021-07-07 16:13:30
+20210707 161330
+--- PASS: TestFormatToString (0.00s)
+PASS
 ```
 
-![img.png](readme/img5.png)
+
 
 #### gotool.DateUtil.IsZero 判断时间是否为空
 
@@ -109,9 +132,14 @@ fmt.Println(zero)
 zero = gotool.DateUtil.IsZero(gotool.DateUtil.Now())
 fmt.Println(zero)
 }
+//out
+=== RUN   TestDate_IsZero
+true
+false
+--- PASS: TestDate_IsZero (0.00s)
+PASS
 ```
 
-![img.png](readme/img6.png)
 
 #### gotool.DateUtil.Now 获取当前时间 等同于time.Now(),为了统一化所以将此方法也纳入到工具中
 
@@ -127,9 +155,13 @@ gotool.Logs.ErrorLog().Println(err.Error())
 }
 fmt.Println(timestamp)
 }
+//out
+=== RUN   TestInterpretStringToTimestamp
+1620112379
+--- PASS: TestInterpretStringToTimestamp (0.00s)
+PASS
 ```
 
-![img.png](readme/img7.png)
 
 #### gotool.DateUtil.UnixToTime 时间戳转时间
 
@@ -140,10 +172,14 @@ fmt.Println("时间戳----------------------->", unix)
 toTime := gotool.DateUtil.UnixToTime(unix)
 fmt.Println(toTime)
 }
-
+//out
+=== RUN   TestUnixToTime
+时间戳-----------------------> 1625645682
+2021-07-07 16:14:42 +0800 CST
+--- PASS: TestUnixToTime (0.00s)
+PASS
 ```
 
-![img.png](readme/img8.png)
 
 #### gotool.DateUtil.GetWeekDay 获取星期几
 
@@ -153,9 +189,13 @@ now := gotool.DateUtil.Now()
 day := gotool.DateUtil.GetWeekDay(now)
 fmt.Println("今天是-----------------周", day)
 }
+//out
+=== RUN   TestGetWeekDay
+今天是-----------------周 3
+--- PASS: TestGetWeekDay (0.00s)
+PASS
 ```
 
-![img.png](readme/img9.png)
 
 #### gotool.DateUtil.MinuteAddOrSub,HourAddOrSub,DayAddOrSub 时间计算工具
 
