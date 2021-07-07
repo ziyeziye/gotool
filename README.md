@@ -268,7 +268,6 @@ hash := gotool.BcryptUtils.CompareHash(generate, "123456789")
 fmt.Println(hash)
 }
 //out
-2021/07/07 14:56:37 init ...
 == = RUN   TestGenerate
 $2a$10$IACJ6zGuNuzaumrvDz58Q.vJUzz4JGqougYKrdCs48rQYIRjAXcU2
 true
@@ -284,7 +283,6 @@ md5 := gotool.BcryptUtils.MD5("123456789")
 fmt.Println(md5)
 }
 //out
-2021/07/07 15:04:47 init ...
 == = RUN   TestMd5
 25f9e794323b453885f5181f1b624d0b
 --- PASS: TestMd5 (0.00s)
@@ -326,7 +324,6 @@ sourceData := gotool.BcryptUtils.RsaDecrypt(ciphertext, prvKey)
 fmt.Println("私钥解密后的数据：", string(sourceData))
 }
 //out
-2021/07/07 15:18:46 init ...
 == = RUN   TestRsa
 -------------------------------获取RSA公私钥-----------------------------------------
 -----BEGIN RSA PRIVATE KEY-----
@@ -381,7 +378,6 @@ func TestLogs(t *testing.T) {
 	gotool.Logs.DebugLog().Println("Debug日志测试")
 }
 //out
-2021/07/07 15:58:10 init ...
 === RUN   TestLogs
 [ERROR] 2021/07/07 15:58:10 logs_test.go:9: Error日志测试
 [INFO] 2021/07/07 15:58:10 logs_test.go:10: Info日志测试
@@ -400,7 +396,6 @@ func TestPage(t *testing.T) {
 	fmt.Println(paginator)
 }
 //out
-2021/07/07 16:02:41 init ...
 === RUN   TestPage
 map[AfterPage:6 beforePage:4 currPage:5 pages:[3 4 5 6 7] totalPages:25]
 --- PASS: TestPage (0.00s)
