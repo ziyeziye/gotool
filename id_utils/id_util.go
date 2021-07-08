@@ -59,3 +59,12 @@ func (i IdUtils) CreateCaptcha(n int) (int64, error) {
 	parseInt, err := strconv.ParseInt(sprintf, 10, 64)
 	return parseInt, err
 }
+
+// GetIdWork 根据时间戳在加以计算获取int64的id
+func (i IdUtils) GetIdWork() int64 {
+	unix := time.Now().Unix()
+	itoa := strconv.Itoa(int(unix))
+	captcha, _ := i.CreateCaptcha(6)
+	parseInt, _ := strconv.ParseInt(itoa+strconv.Itoa(int(captcha)), 10, 64)
+	return parseInt
+}

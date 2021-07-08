@@ -355,6 +355,67 @@ x6TVt5bG1c3NVAmcBQIDAQAB
 PASS
 ```
 
+ZipUtils
+=======
+压缩和解压工具，可单文件压缩也可进行目录压缩，或者跨目录压缩
+
+#### gotool.ZipUtils.Compress
+
+- files 文件数组 可以是多目录文件
+- dest 压缩文件存放地址
+
+```go
+func TestCompress(t *testing.T) {
+open, err := os.Open("/Users/fanyanan/Downloads/gotool")
+if err != nil {
+t.Fatal(err)
+}
+files := []*os.File{open}
+flag, err := gotool.ZipUtils.Compress(files, "/Users/fanyanan/Downloads/test.zip")
+if err != nil {
+t.Fatal(err)
+}
+if flag {
+fmt.Println("压缩成功")
+}
+}
+//out
+== = RUN   TestCompress
+压缩成功
+--- PASS: TestCompress (0.12s)
+PASS
+```
+
+#### gotool.ZipUtils.DeCompress
+
+- zipFile 压缩包路径
+- dest 要解压的路径
+
+```go
+func TestDeCompress(t *testing.T) {
+	compress, err := gotool.ZipUtils.DeCompress("/Users/fanyanan/Downloads/test.zip", "/Users/fanyanan/Downloads")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if compress {
+		fmt.Println("解压成功")
+	}
+}
+//out
+=== RUN   TestDeCompress
+解压成功
+--- PASS: TestDeCompress (0.44s)
+PASS
+```
+
+[comment]: <> (FileUtils)
+
+[comment]: <> (=======)
+
+[comment]: <> (文件操作工具，让做io操作更简单各个方便)
+
+
+
 Logs 日志打印工具
 =======
 
@@ -402,19 +463,20 @@ IdUtils
 id生成工具，可生成字符串id和int类型id，根据需要选择自己需要的生成规则
 
 #### gotool.IdUtils.IdUUIDToTime 根据时间生成的UUID规则，入参 true消除“-”false保留“-”
+
 ```go
 func TestUUID(t *testing.T) {
-	time, err := gotool.IdUtils.IdUUIDToTime(true)
-	if err == nil {
-		fmt.Println("根据时间生成UUID去除--------------------->'-'----->", time)
-	}
-	time, err = gotool.IdUtils.IdUUIDToTime(false)
-	if err == nil {
-		fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
-	}
+time, err := gotool.IdUtils.IdUUIDToTime(true)
+if err == nil {
+fmt.Println("根据时间生成UUID去除--------------------->'-'----->", time)
+}
+time, err = gotool.IdUtils.IdUUIDToTime(false)
+if err == nil {
+fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
+}
 }
 //out
-=== RUN   TestUUID
+== = RUN   TestUUID
 根据时间生成UUID去除--------------------->'-'-----> 6fb94fe4dfd511ebbc4418c04d462680
 根据时间生成不去除--------------------->'-'-----> 6fb9c783-dfd5-11eb-bc44-18c04d462680
 --- PASS: TestUUID (0.00s)
@@ -422,17 +484,18 @@ PASS
 ```
 
 #### gotool.IdUtils.IdUUIDToRan 根据随机数生成的UUID推荐使用本方法，并发不会出现重复现象入，参 true消除“-”false保留“-”
+
 ```go
-	time, err := gotool.IdUtils.IdUUIDToTime(true)
-	if err == nil {
-		fmt.Println("根据时间生成UUID去除--------------------->'-'----->", time)
-	}
-	time, err = gotool.IdUtils.IdUUIDToTime(false)
-	if err == nil {
-		fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
-	}
+    time, err := gotool.IdUtils.IdUUIDToTime(true)
+if err == nil {
+fmt.Println("根据时间生成UUID去除--------------------->'-'----->", time)
+}
+time, err = gotool.IdUtils.IdUUIDToTime(false)
+if err == nil {
+fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
+}
 //out
-=== RUN   TestUUID
+== = RUN   TestUUID
 根据随机数生成UUID去除--------------------->'-'-----> cf5bcdc585454cda95447aae186d14e6
 根据随机数生成不去除--------------------->'-'-----> 72035dba-d45f-480f-b1fd-508d1e036f71
 --- PASS: TestUUID (0.00s)
@@ -440,26 +503,42 @@ PASS
 ```
 
 #### gotool.IdUtils.CreateCaptcha 生成随机数id，int类型，入参int 1-18，超过18后会造成int超过长度
+
 ```go
 func TestCreateCaptcha(t *testing.T) {
-	captcha, err := gotool.IdUtils.CreateCaptcha(18)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("18位------------------------------------------>",captcha)
-	captcha, err = gotool.IdUtils.CreateCaptcha(10)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("10位------------------------------------------>",captcha)
+captcha, err := gotool.IdUtils.CreateCaptcha(18)
+if err != nil {
+fmt.Println(err)
+}
+fmt.Println("18位------------------------------------------>", captcha)
+captcha, err = gotool.IdUtils.CreateCaptcha(10)
+if err != nil {
+fmt.Println(err)
+}
+fmt.Println("10位------------------------------------------>", captcha)
 }
 //out
-=== RUN   TestCreateCaptcha
+== = RUN   TestCreateCaptcha
 18位------------------------------------------> 492457482855750014
 10位------------------------------------------> 2855750014
 --- PASS: TestCreateCaptcha (0.00s)
 PASS
 ```
+
+#### gotool.IdUtils.GetIdWork根据时间戳在加以计算获取int64的id 长度16位
+
+```go
+func TestGetIdWork(t *testing.T) {
+work := gotool.IdUtils.GetIdWork()
+fmt.Println("根据时间戳在加以计算获取int64类型id-------->", work)
+}
+//out
+== = RUN   TestGetIdWork
+根据时间戳在加以计算获取int64类型id--------> 1625746675366450
+--- PASS: TestGetIdWork (0.00s)
+PASS
+```
+
 HttpUtils
 =======
 

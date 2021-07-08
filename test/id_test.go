@@ -37,3 +37,8 @@ func TestCreateCaptcha(t *testing.T) {
 	}
 	fmt.Println("10位------------------------------------------>", captcha)
 }
+
+func TestGetIdWork(t *testing.T) {
+	work := gotool.IdUtils.GetIdWork()
+	fmt.Println("根据时间戳在加以计算获取int64类型id-------->", work)
+}
