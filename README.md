@@ -401,7 +401,7 @@ IdUtils
 =======
 id生成工具，可生成字符串id和int类型id，根据需要选择自己需要的生成规则
 
-####gotool.IdUtils.IdUUIDToTime 根据时间生成的UUID规则，入参 true消除“-”false保留“-”
+#### gotool.IdUtils.IdUUIDToTime 根据时间生成的UUID规则，入参 true消除“-”false保留“-”
 ```go
 func TestUUID(t *testing.T) {
 	time, err := gotool.IdUtils.IdUUIDToTime(true)
@@ -421,7 +421,7 @@ func TestUUID(t *testing.T) {
 PASS
 ```
 
-####gotool.IdUtils.IdUUIDToRan 根据随机数生成的UUID推荐使用本方法，并发不会出现重复现象入，参 true消除“-”false保留“-”
+#### gotool.IdUtils.IdUUIDToRan 根据随机数生成的UUID推荐使用本方法，并发不会出现重复现象入，参 true消除“-”false保留“-”
 ```go
 	time, err := gotool.IdUtils.IdUUIDToTime(true)
 	if err == nil {
@@ -439,7 +439,7 @@ PASS
 PASS
 ```
 
-####gotool.IdUtils.CreateCaptcha 生成随机数id，int类型，入参int 1-18，超过18后会造成int超过长度
+#### gotool.IdUtils.CreateCaptcha 生成随机数id，int类型，入参int 1-18，超过18后会造成int超过长度
 ```go
 func TestCreateCaptcha(t *testing.T) {
 	captcha, err := gotool.IdUtils.CreateCaptcha(18)
