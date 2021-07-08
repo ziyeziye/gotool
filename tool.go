@@ -5,6 +5,7 @@ import (
 	"github.com/druidcaesa/gotool/bcrypt"
 	"github.com/druidcaesa/gotool/convert"
 	"github.com/druidcaesa/gotool/date"
+	"github.com/druidcaesa/gotool/id_utils"
 	"github.com/druidcaesa/gotool/logs"
 	"github.com/druidcaesa/gotool/page"
 	"github.com/druidcaesa/gotool/request"
@@ -27,4 +28,5 @@ var (
 	HttpUtils     request.Request   //http工具
 	ConvertUtils  convert.Convert   //公历转农历相关操作
 	PageUtils     page.Page         //分页插件
+	IdUtils       id_utils.IdUtils  //id生成工具
 )

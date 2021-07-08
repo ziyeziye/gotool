@@ -27,12 +27,12 @@ func TestStringReplacePlaceholder(t *testing.T) {
 s := "你是我的{},我是你的{}"
 placeholder, err := gotool.StrUtils.ReplacePlaceholder(s, "唯一", "所有")
 if err == nil {
-    fmt.Println(placeholder)
-    }
+fmt.Println(placeholder)
+}
 }
 //out
-=== RUN   TestStringReplacePlaceholder
-你是我的唯一,我是你的所有
+== = RUN   TestStringReplacePlaceholder
+你是我的唯一, 我是你的所有
 --- PASS: TestStringReplacePlaceholder (0.00s)
 PASS
 ```
@@ -49,13 +49,12 @@ suffix, _ = gotool.StrUtils.RemoveSuffix(fullFilename)
 fmt.Println(suffix)
 }
 //out
-=== RUN   TestRemoveSuffix
+== = RUN   TestRemoveSuffix
 test
 test
 --- PASS: TestRemoveSuffix (0.00s)
 PASS
 ```
-
 
 #### gotool.StrUtils.GetSuffix 获取文件扩展名
 
@@ -69,7 +68,7 @@ suffix, _ = gotool.StrUtils.GetSuffix(fullFilename)
 fmt.Println(suffix)
 }
 //out
-=== RUN   TestGetSuffix
+== = RUN   TestGetSuffix
 .txt
 .txt
 --- PASS: TestGetSuffix (0.00s)
@@ -88,7 +87,7 @@ empty = gotool.StrUtils.HasEmpty(str)
 fmt.Println(empty)
 }
 //out
-=== RUN   TestHasStr
+== = RUN   TestHasStr
 true
 false
 --- PASS: TestHasStr (0.00s)
@@ -112,13 +111,12 @@ fmt.Println(toString)
 }
 //年月日对应YYYY MM DD 时分秒 hhmmss 可进行任意组合 比如 YYYY  hh   YYYY-DD hh:mm 等
 //out
-=== RUN   TestFormatToString
+== = RUN   TestFormatToString
 2021-07-07 16:13:30
 20210707 161330
 --- PASS: TestFormatToString (0.00s)
 PASS
 ```
-
 
 #### gotool.DateUtil.IsZero 判断时间是否为空
 
@@ -132,13 +130,12 @@ zero = gotool.DateUtil.IsZero(gotool.DateUtil.Now())
 fmt.Println(zero)
 }
 //out
-=== RUN   TestDate_IsZero
+== = RUN   TestDate_IsZero
 true
 false
 --- PASS: TestDate_IsZero (0.00s)
 PASS
 ```
-
 
 #### gotool.DateUtil.Now 获取当前时间 等同于time.Now(),为了统一化所以将此方法也纳入到工具中
 
@@ -155,12 +152,11 @@ gotool.Logs.ErrorLog().Println(err.Error())
 fmt.Println(timestamp)
 }
 //out
-=== RUN   TestInterpretStringToTimestamp
+== = RUN   TestInterpretStringToTimestamp
 1620112379
 --- PASS: TestInterpretStringToTimestamp (0.00s)
 PASS
 ```
-
 
 #### gotool.DateUtil.UnixToTime 时间戳转时间
 
@@ -172,13 +168,12 @@ toTime := gotool.DateUtil.UnixToTime(unix)
 fmt.Println(toTime)
 }
 //out
-=== RUN   TestUnixToTime
+== = RUN   TestUnixToTime
 时间戳-----------------------> 1625645682
 2021-07-07 16:14:42 +0800 CST
 --- PASS: TestUnixToTime (0.00s)
 PASS
 ```
-
 
 #### gotool.DateUtil.GetWeekDay 获取星期几
 
@@ -189,12 +184,11 @@ day := gotool.DateUtil.GetWeekDay(now)
 fmt.Println("今天是-----------------周", day)
 }
 //out
-=== RUN   TestGetWeekDay
+== = RUN   TestGetWeekDay
 今天是-----------------周 3
 --- PASS: TestGetWeekDay (0.00s)
 PASS
 ```
-
 
 #### gotool.DateUtil.MinuteAddOrSub,HourAddOrSub,DayAddOrSub 时间计算工具
 
@@ -372,12 +366,12 @@ Logs 日志打印工具
 
 ```go
 func TestLogs(t *testing.T) {
-	gotool.Logs.ErrorLog().Println("Error日志测试")
-	gotool.Logs.InfoLog().Println("Info日志测试")
-	gotool.Logs.DebugLog().Println("Debug日志测试")
+gotool.Logs.ErrorLog().Println("Error日志测试")
+gotool.Logs.InfoLog().Println("Info日志测试")
+gotool.Logs.DebugLog().Println("Debug日志测试")
 }
 //out
-=== RUN   TestLogs
+== = RUN   TestLogs
 [ERROR] 2021/07/07 15:58:10 logs_test.go:9: Error日志测试
 [INFO] 2021/07/07 15:58:10 logs_test.go:10: Info日志测试
 [DEBUG] 2021/07/07 15:58:10 logs_test.go:11: Debug日志测试
@@ -389,19 +383,83 @@ PageUtils 分页工具
 =========
 
 #### gotool.PageUtils.Paginator 彩虹分页
+
 ```go
 func TestPage(t *testing.T) {
-	paginator := gotool.PageUtils.Paginator(5, 20, 500)
-	fmt.Println(paginator)
+paginator := gotool.PageUtils.Paginator(5, 20, 500)
+fmt.Println(paginator)
 }
 //out
-=== RUN   TestPage
+== = RUN   TestPage
 map[AfterPage:6 beforePage:4 currPage:5 pages:[3 4 5 6 7] totalPages:25]
 --- PASS: TestPage (0.00s)
 PASS
 //说明 AfterPage 下一页  beforePage前一页 currPage当前页 pages页码 totalPages总页数
 ```
 
+IdUtils
+=======
+id生成工具，可生成字符串id和int类型id，根据需要选择自己需要的生成规则
+
+####gotool.IdUtils.IdUUIDToTime 根据时间生成的UUID规则，入参 true消除“-”false保留“-”
+```go
+func TestUUID(t *testing.T) {
+	time, err := gotool.IdUtils.IdUUIDToTime(true)
+	if err == nil {
+		fmt.Println("根据时间生成UUID去除--------------------->'-'----->", time)
+	}
+	time, err = gotool.IdUtils.IdUUIDToTime(false)
+	if err == nil {
+		fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
+	}
+}
+//out
+=== RUN   TestUUID
+根据时间生成UUID去除--------------------->'-'-----> 6fb94fe4dfd511ebbc4418c04d462680
+根据时间生成不去除--------------------->'-'-----> 6fb9c783-dfd5-11eb-bc44-18c04d462680
+--- PASS: TestUUID (0.00s)
+PASS
+```
+
+####gotool.IdUtils.IdUUIDToRan 根据随机数生成的UUID推荐使用本方法，并发不会出现重复现象入，参 true消除“-”false保留“-”
+```go
+	time, err := gotool.IdUtils.IdUUIDToTime(true)
+	if err == nil {
+		fmt.Println("根据时间生成UUID去除--------------------->'-'----->", time)
+	}
+	time, err = gotool.IdUtils.IdUUIDToTime(false)
+	if err == nil {
+		fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
+	}
+//out
+=== RUN   TestUUID
+根据随机数生成UUID去除--------------------->'-'-----> cf5bcdc585454cda95447aae186d14e6
+根据随机数生成不去除--------------------->'-'-----> 72035dba-d45f-480f-b1fd-508d1e036f71
+--- PASS: TestUUID (0.00s)
+PASS
+```
+
+####gotool.IdUtils.CreateCaptcha 生成随机数id，int类型，入参int 1-18，超过18后会造成int超过长度
+```go
+func TestCreateCaptcha(t *testing.T) {
+	captcha, err := gotool.IdUtils.CreateCaptcha(18)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("18位------------------------------------------>",captcha)
+	captcha, err = gotool.IdUtils.CreateCaptcha(10)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("10位------------------------------------------>",captcha)
+}
+//out
+=== RUN   TestCreateCaptcha
+18位------------------------------------------> 492457482855750014
+10位------------------------------------------> 2855750014
+--- PASS: TestCreateCaptcha (0.00s)
+PASS
+```
 HttpUtils
 =======
 
