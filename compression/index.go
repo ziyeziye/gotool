@@ -23,7 +23,7 @@ func (z ZipUtils) Compress(files []*os.File, dest string) (bool, error) {
 	}
 	//判断文件是否存在，存在的话删除
 	if z.f.Exists(dest) {
-		err := z.f.RemoveFile(dest)
+		_, err := z.f.RemoveFile(dest)
 		if err != nil {
 			log.Fatal(err)
 			return false, err

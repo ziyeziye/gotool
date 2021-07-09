@@ -3,6 +3,7 @@ package gotool
 import (
 	"github.com/druidcaesa/gotool/array"
 	"github.com/druidcaesa/gotool/bcrypt"
+	"github.com/druidcaesa/gotool/captcha"
 	"github.com/druidcaesa/gotool/compression"
 	"github.com/druidcaesa/gotool/convert"
 	"github.com/druidcaesa/gotool/date"
@@ -33,4 +34,5 @@ var (
 	IdUtils       id_utils.IdUtils     //id生成工具
 	ZipUtils      compression.ZipUtils //压缩和解压缩工具
 	FileUtils     openfile.FileUtils   //IO操作工具
+	CaptchaUtils  captcha.Captcha      //验证码工具
 )

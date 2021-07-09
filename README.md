@@ -2,6 +2,13 @@ gotool
 =======
 gotool是一个小而全的Golang工具集，主要是将日常开发中常用的到方法进行提炼集成，避免重复造轮子，提高工作效率，每一个方法都是作者经过工作经验，和从以往的项目中提炼出来的。
 
+## 2021-7-9更新内容详细使用请看文档
+
+- 添加文件IO操作工具FileUtils
+- 添加验证码生成工具CaptchaUtils
+- 添加文件目录压缩和解压缩工具ZipUtis
+- 字符串数组工具StrArrayUtils
+
 ### 如何使用gotool呢？
 
 ### 安装
@@ -20,7 +27,7 @@ StrUtils
 =======
 golang一个string常用工具集，基本涵盖了开发中经常用到的工具，目前正在不端的完善中
 
-#### gotool.StrUtils.ReplacePlaceholder 占位符替换
+#### 1、gotool.StrUtils.ReplacePlaceholder 占位符替换
 
 ```go
 func TestStringReplacePlaceholder(t *testing.T) {
@@ -37,7 +44,7 @@ fmt.Println(placeholder)
 PASS
 ```
 
-#### gotool.StrUtils.RemoveSuffix 去除文件扩展名获取文件名
+#### 2、gotool.StrUtils.RemoveSuffix 去除文件扩展名获取文件名
 
 ```go
 func TestRemoveSuffix(t *testing.T) {
@@ -56,7 +63,7 @@ test
 PASS
 ```
 
-#### gotool.StrUtils.GetSuffix 获取文件扩展名
+#### 3、gotool.StrUtils.GetSuffix 获取文件扩展名
 
 ```go
 func TestGetSuffix(t *testing.T) {
@@ -75,7 +82,7 @@ fmt.Println(suffix)
 PASS
 ```
 
-#### gotool.StrUtils.HasEmpty 判断字符串是否未空，我空返回ture
+#### 4、gotool.StrUtils.HasEmpty 判断字符串是否未空，我空返回ture
 
 ```go
 func TestHasStr(t *testing.T) {
@@ -95,11 +102,74 @@ PASS
 
 ```
 
+StrArrayUtils string数组操作工具
+======
+
+#### 1、gotool.StrArrayUtils.StringToInt64 字符串数组转int64数组，调用前请确保字符串数组均为数字
+
+```go
+func TestStringToInt64(t *testing.T) {
+//字符串数组转int64
+strings := []string{"1", "23123", "232323"}
+fmt.Println(reflect.TypeOf(strings[0]))
+toInt64, err := gotool.StrArrayUtils.StringToInt64(strings)
+if err != nil {
+t.Fatal(err)
+}
+fmt.Println(reflect.TypeOf(toInt64[0]))
+}
+//out
+== = RUN   TestStringToInt64
+string
+int64
+--- PASS: TestStringToInt64 (0.00s)
+PASS
+```
+
+#### 2、gotool.StrArrayUtils.StringToInt32 字符串数组转int64数组，调用前请确保字符串数组均为数字
+
+```go
+func TestStringToInt32(t *testing.T) {
+//字符串数组转int64
+strings := []string{"1", "23123", "232323"}
+fmt.Println(reflect.TypeOf(strings[0]))
+toInt64, err := gotool.StrArrayUtils.StringToInt32(strings)
+if err != nil {
+t.Fatal(err)
+}
+fmt.Println(reflect.TypeOf(toInt64[0]))
+}
+//out
+== = RUN   TestStringToInt32
+string
+int32
+--- PASS: TestStringToInt32 (0.00s)
+PASS
+```
+
+#### 3、gotool.StrArrayUtils.ArrayDuplication 数组去重
+
+```go
+func TestArrayDuplication(t *testing.T) {
+//string数组去重
+strings := []string{"hello", "word", "gotool", "word"}
+fmt.Println("去重前----------------->", strings)
+duplication := gotool.StrArrayUtils.ArrayDuplication(strings)
+fmt.Println("去重后----------------->", duplication)
+}
+//out
+== = RUN   TestArrayDuplication
+去重前-----------------> [hello word gotool word]
+去重后-----------------> [hello word gotool]
+--- PASS: TestArrayDuplication (0.00s)
+PASS
+```
+
 DateUtil
 =======
 golang一个时间操作工具集，基本涵盖了开发中经常用到的工具，目前正在不端的完善中
 
-#### gotool.DateUtil.FormatToString 时间格式化成字符串
+#### 1、gotool.DateUtil.FormatToString 时间格式化成字符串
 
 ```go
 func TestFormatToString(t *testing.T) {
@@ -118,7 +188,7 @@ fmt.Println(toString)
 PASS
 ```
 
-#### gotool.DateUtil.IsZero 判断时间是否为空
+#### 2、gotool.DateUtil.IsZero 判断时间是否为空
 
 ```go
 //时间为空 true 否则 false
@@ -137,9 +207,9 @@ false
 PASS
 ```
 
-#### gotool.DateUtil.Now 获取当前时间 等同于time.Now(),为了统一化所以将此方法也纳入到工具中
+#### 3、gotool.DateUtil.Now 获取当前时间 等同于time.Now(),为了统一化所以将此方法也纳入到工具中
 
-#### gotool.DateUtil.InterpretStringToTimestamp 字符串格式化成时间类型
+#### 4、gotool.DateUtil.InterpretStringToTimestamp 字符串格式化成时间类型
 
 ```go
 //参数一 需要格式化的时间字符串 参数二 字符串格式，需要和需格式化字符串格式一致 
@@ -158,7 +228,7 @@ fmt.Println(timestamp)
 PASS
 ```
 
-#### gotool.DateUtil.UnixToTime 时间戳转时间
+#### 5、gotool.DateUtil.UnixToTime 时间戳转时间
 
 ```go
 func TestUnixToTime(t *testing.T) {
@@ -175,7 +245,7 @@ fmt.Println(toTime)
 PASS
 ```
 
-#### gotool.DateUtil.GetWeekDay 获取星期几
+#### 6、gotool.DateUtil.GetWeekDay 获取星期几
 
 ```go
 func TestGetWeekDay(t *testing.T) {
@@ -190,7 +260,7 @@ fmt.Println("今天是-----------------周", day)
 PASS
 ```
 
-#### gotool.DateUtil.MinuteAddOrSub,HourAddOrSub,DayAddOrSub 时间计算工具
+#### 7、gotool.DateUtil.MinuteAddOrSub,HourAddOrSub,DayAddOrSub 时间计算工具
 
 ```go
 //时间计算
@@ -222,7 +292,7 @@ fmt.Println("天计算结果-------------------->", sub)
 ConvertUtils 公历转农历工具
 ============
 
-#### gotool.ConvertUtils.GregorianToLunarCalendar(公历转农历),GetLunarYearDays(农历转公历),GetLunarYearDays(获取农历这一年农历天数)
+#### 1、gotool.ConvertUtils.GregorianToLunarCalendar(公历转农历),GetLunarYearDays(农历转公历),GetLunarYearDays(获取农历这一年农历天数)
 
 ```go
 func TestConvertTest(t *testing.T) {
@@ -238,18 +308,18 @@ fmt.Println(days)
 //354
 ```
 
-#### gotool.ConvertUtils.GetSolarMonthDays(2021,7)获取公历某月天数 2021年7月天数
+#### 2、gotool.ConvertUtils.GetSolarMonthDays(2021,7)获取公历某月天数 2021年7月天数
 
-#### gotool.ConvertUtils.IsLeapYear(2021)获取某年是否是瑞年 true是 false不是
+#### 3、gotool.ConvertUtils.IsLeapYear(2021)获取某年是否是瑞年 true是 false不是
 
-#### gotool.ConvertUtils.GetLeapMonth(2021)获取某年闰月月份
+#### 4、gotool.ConvertUtils.GetLeapMonth(2021)获取某年闰月月份
 
-BcryptUtils 机密和解密工具
+BcryptUtils 加密和解密工具
 ==========
 
-#### gotool.BcryptUtils.Generate 加密处理，多用于密码进行加密后数据库存储使用，不可逆
+#### 1、gotool.BcryptUtils.Generate 加密处理，多用于密码进行加密后数据库存储使用，不可逆
 
-#### gotool.BcryptUtils.CompareHash 加密后和未加密密码对比，多用于登录验证使用
+#### 2、gotool.BcryptUtils.CompareHash 加密后和未加密密码对比，多用于登录验证使用
 
 ```go
 func TestGenerate(t *testing.T) {
@@ -268,7 +338,7 @@ true
 PASS
 ```
 
-#### gotool.BcryptUtils.MD5 md5加密
+#### 3、gotool.BcryptUtils.MD5 md5加密
 
 ```go
 func TestMd5(t *testing.T) {
@@ -282,15 +352,15 @@ fmt.Println(md5)
 PASS
 ```
 
-#### gotool.BcryptUtils.GenRsaKey(获取公钥和私钥),
+#### 4、gotool.BcryptUtils.GenRsaKey(获取公钥和私钥),
 
-#### RsaSignWithSha256(进行签名),
+#### 5、RsaSignWithSha256(进行签名),
 
-#### RsaVerySignWithSha256(验证),
+#### 6、RsaVerySignWithSha256(验证),
 
-#### RsaEncrypt(公钥加密),
+#### 7、RsaEncrypt(公钥加密),
 
-#### RsaDecrypt(私钥解密)
+#### 8、RsaDecrypt(私钥解密)
 
 ```go
 func TestRsa(t *testing.T) {
@@ -359,7 +429,7 @@ ZipUtils
 =======
 压缩和解压工具，可单文件压缩也可进行目录压缩，或者跨目录压缩
 
-#### gotool.ZipUtils.Compress
+#### 1、gotool.ZipUtils.Compress
 
 - files 文件数组 可以是多目录文件
 - dest 压缩文件存放地址
@@ -386,44 +456,310 @@ fmt.Println("压缩成功")
 PASS
 ```
 
-#### gotool.ZipUtils.DeCompress
+#### 2、gotool.ZipUtils.DeCompress
 
 - zipFile 压缩包路径
 - dest 要解压的路径
 
 ```go
 func TestDeCompress(t *testing.T) {
-	compress, err := gotool.ZipUtils.DeCompress("/Users/fanyanan/Downloads/test.zip", "/Users/fanyanan/Downloads")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if compress {
-		fmt.Println("解压成功")
-	}
+compress, err := gotool.ZipUtils.DeCompress("/Users/fanyanan/Downloads/test.zip", "/Users/fanyanan/Downloads")
+if err != nil {
+t.Fatal(err)
+}
+if compress {
+fmt.Println("解压成功")
+}
 }
 //out
-=== RUN   TestDeCompress
+== = RUN   TestDeCompress
 解压成功
 --- PASS: TestDeCompress (0.44s)
 PASS
 ```
 
-[comment]: <> (FileUtils)
+FileUtils
+=======
 
-[comment]: <> (=======)
+文件操作工具，让做io操作更简单各个方便,让io操作不是那么难
 
-[comment]: <> (文件操作工具，让做io操作更简单各个方便)
+#### 1、gotool.FileUtils.Exists 判断文件或者目录是否存在
 
+```go
+func TestFileExists(t *testing.T) {
+//判断文件或目录是否存在
+exists := gotool.FileUtils.Exists("F:/go-test/test")
+fmt.Println("创建前------------------------>", exists)
+err := os.MkdirAll("F:/go-test/test", os.ModePerm)
+if err != nil {
+t.Fatal(err)
+}
+exists = gotool.FileUtils.Exists("F:/go-test/test")
+fmt.Println("创建后------------------------>", exists)
+}
+//out
+== = RUN   TestFileExists
+创建前------------------------> false
+创建后------------------------> true
+--- PASS: TestFileExists (0.00s)
+PASS
+```
 
+#### 2、gotool.FileUtils.IsDir 判断是否是目录
+
+```go
+func TestIsDir(t *testing.T) {
+//判断是否是目录
+dir := gotool.FileUtils.IsDir("F:/go-test/test")
+fmt.Println("是否是目录--------------------->", dir)
+dir = gotool.FileUtils.IsDir("F:/go-test/test/test.txt")
+fmt.Println("是否是目录--------------------->", dir)
+}
+//out
+== = RUN   TestIsDir
+是否是目录---------------------> true
+是否是目录---------------------> false
+--- PASS: TestIsDir (0.00s)
+PASS
+```
+
+#### 3、gotool.FileUtils.IsFile 判断是否是文件
+
+```go
+func TestIsFile(t *testing.T) {
+//判断是否是文件
+file := gotool.FileUtils.IsFile("F:/go-test/test")
+fmt.Println("是否是文件--------------------->", file)
+file = gotool.FileUtils.IsFile("F:/go-test/test/test.txt")
+fmt.Println("是否是文件--------------------->", file)
+}
+//out
+== = RUN   TestIsFile
+是否是文件---------------------> false
+是否是文件---------------------> true
+--- PASS: TestIsFile (0.00s)
+PASS
+```
+
+#### 4、gotool.FileUtils.RemoveFile 删除文件或目录
+
+```go
+func TestRemove(t *testing.T) {
+//删除文件
+file, err := gotool.FileUtils.RemoveFile("F:/go-test/test/test.txt")
+if err != nil {
+t.Fatal(err)
+}
+if file {
+//查看文件是否还存在
+exists := gotool.FileUtils.Exists("F:/go-test/test/test.txt")
+fmt.Println("文件是否存在------------------------>", exists)
+}
+}
+//out
+== = RUN   TestRemove
+文件是否存在------------------------> false
+--- PASS: TestRemove (0.00s)
+PASS
+```
+
+#### 5、gotool.FileUtils.OpenFileWronly 只写模式打开文件，没有将自动创建，写入内从进行测试
+
+```go
+func TestOpenFileWronly(t *testing.T) {
+//用只写模式打开一个文件，并且写入5条内容,若文件不存在将会创建一个
+path := "F:/go-test/test/test.txt"
+str := "hello word gotool \n"
+wronly, err := gotool.FileUtils.OpenFileWronly(path)
+if err != nil {
+t.Fatal(err)
+}
+defer wronly.Close()
+write := bufio.NewWriter(wronly)
+for i := 0; i < 5; i++ {
+write.WriteString(str)
+}
+//Flush将缓存的文件真正写入到文件中
+write.Flush()
+//读取文件写入到控制台
+files, err := gotool.FileUtils.OpenFileRdonly(path)
+if err != nil {
+t.Fatal(err)
+}
+defer files.Close()
+reader := bufio.NewReader(files)
+for {
+str, err := reader.ReadString('\n')
+if err != nil {
+break
+}
+fmt.Print(str)
+}
+}
+//out
+== = RUN   TestOpenFileWronly
+hello word gotool
+hello word gotool
+hello word gotool
+hello word gotool
+hello word gotool
+--- PASS: TestOpenFileWronly (0.00s)
+PASS
+```
+
+#### 6、gotool.FileUtils.OpenFileRdonly 只读模式打开文件，读取内容输出到控制台
+
+```go
+func TestOpenFileRdonly(t *testing.T) {
+path := "F:/go-test/test/test.txt"
+files, err := gotool.FileUtils.OpenFileRdonly(path)
+if err != nil {
+t.Fatal(err)
+}
+defer files.Close()
+reader := bufio.NewReader(files)
+for {
+str, err := reader.ReadString('\n')
+if err != nil {
+break
+}
+fmt.Print(str)
+}
+}
+//out
+== = RUN   TestOpenFileRdonly
+hello word gotool
+hello word gotool
+hello word gotool
+hello word gotool
+hello word gotool
+--- PASS: TestOpenFileRdonly (0.00s)
+PASS
+```
+
+#### 7、gotool.FileUtils.OpenFileAppend 打开文件在文件后面追加内容，没有将自动创建文件
+
+```go
+func TestOpenFileAppend(t *testing.T) {
+//打开文件在文件后面追加数据
+path := "F:/go-test/test/test.txt"
+str := "追加内容 \n"
+wronly, err := gotool.FileUtils.OpenFileAppend(path)
+if err != nil {
+t.Fatal(err)
+}
+defer wronly.Close()
+write := bufio.NewWriter(wronly)
+for i := 0; i < 5; i++ {
+write.WriteString(str)
+}
+//Flush将缓存的文件真正写入到文件中
+write.Flush()
+//读取文件写入到控制台
+files, err := gotool.FileUtils.OpenFileRdonly(path)
+if err != nil {
+t.Fatal(err)
+}
+defer files.Close()
+reader := bufio.NewReader(files)
+for {
+str, err := reader.ReadString('\n')
+if err != nil {
+break
+}
+fmt.Print(str)
+}
+}
+//out
+== = RUN   TestOpenFileAppend
+hello word gotool
+hello word gotool
+hello word gotool
+hello word gotool
+hello word gotool
+追加内容
+追加内容
+追加内容
+追加内容
+追加内容
+--- PASS: TestOpenFileAppend (0.00s)
+PASS
+```
+
+#### 8、gotool.FileUtils.FileCopy 文件复制方法
+
+```go
+func TestFileCopy(t *testing.T) {
+//文件复制功能
+path := "F:/go-test/test/test.txt"
+copyPath := "F:/go-test/test/test.txt1"
+//复制钱
+exists := gotool.FileUtils.Exists(copyPath)
+fmt.Println("复制前文件是否存在------------------>", exists)
+//复制后
+fileCopy, err := gotool.FileUtils.FileCopy(path, copyPath)
+if err != nil {
+t.Fatal(err)
+}
+if fileCopy {
+exists := gotool.FileUtils.Exists(copyPath)
+fmt.Println("复制前文件是否存在------------------>", exists)
+}
+}
+//out
+== = RUN   TestFileCopy
+复制前文件是否存在------------------> false
+复制前文件是否存在------------------> true
+--- PASS: TestFileCopy (0.00s)
+PASS
+```
+
+CaptchaUtils 验证码生成工具
+======
+
+#### 1、gotool.CaptchaUtils.GetRandStr 生成验证码strng串
+
+```go
+func TestCaptcha(t *testing.T) {
+//生成验证码字符串，可以进行redis等存储用于验证逻辑
+str := gotool.CaptchaUtils.GetRandStr(6)
+fmt.Println(str)
+}
+//out
+== = RUN   TestCaptcha
+生成验证码字符串-------------------> qK5DME
+--- PASS: TestCaptcha (0.01s)
+PASS
+```
+
+#### 2、gotool.CaptchaUtils.ImgText 生成图片[]byte数组，可以转成base64或者image文件
+
+```go
+func TestCaptcha(t *testing.T) {
+str := gotool.CaptchaUtils.GetRandStr(6)
+fmt.Println("生成验证码字符串------------------->", str)
+//生成图片byte数据，可以根据需要转成base64或者是image图片文件
+text := gotool.CaptchaUtils.ImgText(100, 40, str)
+sourcestring := base64.StdEncoding.EncodeToString(text)
+fmt.Println(sourcestring)
+}
+//out
+== = RUN   TestCaptcha
+生成验证码字符串-------------------> qK5DME
+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
+--- PASS: TestCaptcha (0.01s)
+PASS
+
+```
 
 Logs 日志打印工具
 =======
 
-#### gotool.Logs.ErrorLog 异常日志
+#### 1、gotool.Logs.ErrorLog 异常日志
 
-#### gotool.Logs.InfoLog 加载日志
+#### 2、gotool.Logs.InfoLog 加载日志
 
-#### gotool.Logs.DebugLog 调试日志
+#### 3、gotool.Logs.DebugLog 调试日志
 
 ```go
 func TestLogs(t *testing.T) {
@@ -443,7 +779,7 @@ PASS
 PageUtils 分页工具
 =========
 
-#### gotool.PageUtils.Paginator 彩虹分页
+#### 1、gotool.PageUtils.Paginator 彩虹分页
 
 ```go
 func TestPage(t *testing.T) {
@@ -462,7 +798,7 @@ IdUtils
 =======
 id生成工具，可生成字符串id和int类型id，根据需要选择自己需要的生成规则
 
-#### gotool.IdUtils.IdUUIDToTime 根据时间生成的UUID规则，入参 true消除“-”false保留“-”
+#### 1、gotool.IdUtils.IdUUIDToTime 根据时间生成的UUID规则，入参 true消除“-”false保留“-”
 
 ```go
 func TestUUID(t *testing.T) {
@@ -483,7 +819,7 @@ fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
 PASS
 ```
 
-#### gotool.IdUtils.IdUUIDToRan 根据随机数生成的UUID推荐使用本方法，并发不会出现重复现象入，参 true消除“-”false保留“-”
+#### 2、gotool.IdUtils.IdUUIDToRan 根据随机数生成的UUID推荐使用本方法，并发不会出现重复现象入，参 true消除“-”false保留“-”
 
 ```go
     time, err := gotool.IdUtils.IdUUIDToTime(true)
@@ -502,7 +838,7 @@ fmt.Println("根据时间生成不去除--------------------->'-'----->", time)
 PASS
 ```
 
-#### gotool.IdUtils.CreateCaptcha 生成随机数id，int类型，入参int 1-18，超过18后会造成int超过长度
+#### 3、gotool.IdUtils.CreateCaptcha 生成随机数id，int类型，入参int 1-18，超过18后会造成int超过长度
 
 ```go
 func TestCreateCaptcha(t *testing.T) {
@@ -525,7 +861,7 @@ fmt.Println("10位------------------------------------------>", captcha)
 PASS
 ```
 
-#### gotool.IdUtils.GetIdWork根据时间戳在加以计算获取int64的id 长度16位
+#### 4、gotool.IdUtils.GetIdWork根据时间戳在加以计算获取int64的id 长度16位
 
 ```go
 func TestGetIdWork(t *testing.T) {
