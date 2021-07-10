@@ -14,6 +14,11 @@ If you feel OK, please click STAR
 - Add file directory compression and decompression tool ZipUtis
 - String array tool StrArrayUtils
 
+## 2021-7-10 update content, please refer to the document for detailed usage
+-  Add DesensitizedUtils, a sensitive message desensitization tool
+-  Add the menu tree data formatting tool TreeUtils
+-  Add JSON output beautification tool PrettyUtils
+
 ### How to use gotool?
 
 ### installation

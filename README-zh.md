@@ -15,6 +15,11 @@ gotool是一个小而全的Golang工具集，主要是将日常开发中常用�
 - 添加文件目录压缩和解压缩工具ZipUtis
 - 字符串数组工具StrArrayUtils
 
+## 2021-7-10更新内容详细使用请看文档
+ - 添加敏感消息脱敏工具DesensitizedUtils 
+ - 添加菜单树数据格式化工具TreeUtils 
+ - 添加JSON输出美化工具PrettyUtils
+
 ### 如何使用gotool呢？
 
 ### 安装
