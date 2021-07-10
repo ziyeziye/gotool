@@ -1136,3 +1136,292 @@ if err != nil {
 return err
 }
 ```
+
+TreeUtils
+====== 
+在gotool中实现了快捷菜单树的生成，包括菜单节点的选中状态、半选状态、菜单的搜索。
+
+### 该工具提供了两种方法
+
+#### 1、gotool.TreeUtils.GenerateTree(nodes, selectedNodes []INode) (trees []Tree)
+
+`GenerateTree` 自定义的结构体实现 `INode` 接口后调用此方法生成树结构。
+
+#### 2、gotool.TreeUtilsFindRelationNode(nodes, allNodes []INode) (respNodes []INode)
+
+`FindRelationNode` 在 `allNodes` 中查询 `nodes` 中节点的所有父子节点 返回 `respNodes`(包含 `nodes` ， 跟其所有父子节点)
+
+#### 测试代码
+```go
+package test
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/druidcaesa/gotool"
+	"github.com/druidcaesa/gotool/pretty"
+	"github.com/druidcaesa/gotool/tree"
+	"testing"
+)
+
+// 定义我们自己的菜单对象
+type SystemMenu struct {
+	Id    int    `json:"id"`    //id
+	Pid   int    `json:"pid"`   //上级菜单id
+	Name  string `json:"name"`  //菜单名
+	Route string `json:"route"` //页面路径
+	Icon  string `json:"icon"`  //图标路径
+}
+
+// region 实现ITree 所有接口
+func (s SystemMenu) GetTitle() string {
+	return s.Name
+}
+
+func (s SystemMenu) GetId() int {
+	return s.Id
+}
+
+func (s SystemMenu) GetPid() int {
+	return s.Pid
+}
+
+func (s SystemMenu) GetData() interface{} {
+	return s
+}
+
+func (s SystemMenu) IsRoot() bool {
+	// 这里通过FatherId等于0 或者 FatherId等于自身Id表示顶层根节点
+	return s.Pid == 0 || s.Pid == s.Id
+}
+
+// endregion
+
+type SystemMenus []SystemMenu
+
+// ConvertToINodeArray 将当前数组转换成父类 INode 接口 数组
+func (s SystemMenus) ConvertToINodeArray() (nodes []tree.INode) {
+	for _, v := range s {
+		nodes = append(nodes, v)
+	}
+	return
+}
+
+func TestGenerateTree(t *testing.T) {
+	// 模拟获取数据库中所有菜单，在其它所有的查询中，也是首先将数据库中所有数据查询出来放到数组中，
+	// 后面的遍历递归，都在这个 allMenu中进行，而不是在数据库中进行递归查询，减小数据库压力。
+	allMenu := []SystemMenu{
+		{Id: 1, Pid: 0, Name: "系统总览", Route: "/systemOverview", Icon: "icon-system"},
+		{Id: 2, Pid: 0, Name: "系统配置", Route: "/systemConfig", Icon: "icon-config"},
+
+		{Id: 3, Pid: 1, Name: "资产", Route: "/asset", Icon: "icon-asset"},
+		{Id: 4, Pid: 1, Name: "动环", Route: "/pe", Icon: "icon-pe"},
+
+		{Id: 5, Pid: 2, Name: "菜单配置", Route: "/menuConfig", Icon: "icon-menu-config"},
+		{Id: 6, Pid: 3, Name: "设备", Route: "/device", Icon: "icon-device"},
+		{Id: 7, Pid: 3, Name: "机柜", Route: "/device", Icon: "icon-device"},
+	}
+
+	// 生成完全树
+	resp := gotool.TreeUtils.GenerateTree(SystemMenus.ConvertToINodeArray(allMenu), nil)
+	bytes, _ := json.MarshalIndent(resp, "", "\t")
+	//fmt.Println(string(pretty.Color(pretty.PrettyOptions(bytes, pretty.DefaultOptions), nil)))
+
+	// 模拟选中 '资产' 菜单
+	selectedNode := []SystemMenu{allMenu[2]}
+	resp = gotool.TreeUtils.GenerateTree(SystemMenus.ConvertToINodeArray(allMenu), SystemMenus.ConvertToINodeArray(selectedNode))
+	bytes, _ = json.Marshal(resp)
+	//fmt.Println(string(pretty.Color(pretty.PrettyOptions(bytes, pretty.DefaultOptions), nil)))
+
+	// 模拟从数据库中查询出 '设备'
+	device := []SystemMenu{allMenu[5]}
+	// 查询 设备 的所有父节点
+	respNodes := gotool.TreeUtils.FindRelationNode(SystemMenus.ConvertToINodeArray(device), SystemMenus.ConvertToINodeArray(allMenu))
+	resp = gotool.TreeUtils.GenerateTree(respNodes, nil)
+	bytes, _ = json.Marshal(resp)
+	fmt.Println(string(pretty.Color(pretty.PrettyOptions(bytes, pretty.DefaultOptions), nil)))
+}
+
+```
+- 输出结果
+```json
+[
+  {
+    "title": "SystemOverview",
+    "data": {
+      "id": 1,
+      "pid": 0,
+      "name": "SystemOverview",
+      "route": "/systemOverview",
+      "icon": "icon-system"
+    },
+    "leaf": false,
+    "checked": false,
+    "partiallySelected": false,
+    "children": [
+      {
+        "title": "assets",
+        "data": {
+          "id": 3,
+          "pid": 1,
+          "name": "assets",
+          "route": "/asset",
+          "icon": "icon-asset"
+        },
+        "leaf": false,
+        "checked": false,
+        "partiallySelected": false,
+        "children": [
+          {
+            "title": "equipment",
+            "data": {
+              "id": 6,
+              "pid": 3,
+              "name": "equipment",
+              "route": "/device",
+              "icon": "icon-device"
+            },
+            "leaf": true,
+            "checked": false,
+            "partiallySelected": false,
+            "children": null
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+##### Thanks for this feature [azhengyongqin](https://github.com/azhengyongqin/golang-tree-menu)
+
+DesensitizedUtils
+======
+在数据处理或清洗中，可能会涉及到很多隐私信息的脱敏，所gotool封装了一些常用信息的脱敏方法。
+### 提供两个函数方法
+
+#### 1、gotool.DesensitizedUtils.DefaultDesensitized(str string) (result string)
+
+- 中国身份证、手机、身份证脱敏
+- 一般邮箱脱敏
+
+```go
+func TestDesensitized(t *testing.T) {
+	//邮箱脱敏
+	mail := "testhello@gmail.com"
+	star := gotool.DesensitizedUtils.DefaultDesensitized(mail)
+	fmt.Println("mail-------------------->", star)
+	//手机脱敏
+	phone := "13333333333"
+	desensitized := gotool.DesensitizedUtils.DefaultDesensitized(phone)
+	fmt.Println("phone------------------->", desensitized)
+}
+//out
+=== RUN   TestDesensitized
+邮箱--------------------> tes***@gmail.com
+手机-------------------> 133****3333
+--- PASS: TestDesensitized (0.00s)
+PASS
+```
+
+#### 1、gotool.DesensitizedUtils.CustomizeHash(str string, start int, end int) string
+
+- 自定义脱敏
+- `str`要脱敏的数据
+- `start` 开始位置
+- `end` 结束位置
+
+```go
+func TestDesensitized(t *testing.T) {
+	//customize desensitization
+	customize := "sadasdasdkljkldfjlkdjflkjsdf"
+	hideStar := gotool.DesensitizedUtils.CustomizeHash(customize, 4, 14)
+	fmt.Println("customize--------------->", hideStar)
+}
+//out
+=== RUN   TestDesensitized
+customize---------------> sada**********dfjlkdjflkjsdf
+--- PASS: TestDesensitized (0.00s)
+PASS
+```
+PrettyUtils
+=======
+PrettyUtils 是一个 gotool 包，它提供了格式化 JSON 以提高可读性的方法，或者为较小的有效负载压缩 JSON。
+### Pretty
+使用这个例子：
+```json
+{"name":  {"first":"Tom","last":"Anderson"},  "age":37,
+"children": ["Sara","Alex","Jack"],
+"fav.movie": "Deer Hunter", "friends": [
+    {"first": "Janet", "last": "Murphy", "age": 44}
+  ]}
+```
+
+以下代码：
+```go
+result = PrettyUtils.Pretty(example)
+```
+
+将 json 格式化为：
+
+```json
+{
+  "name": {
+    "first": "Tom",
+    "last": "Anderson"
+  },
+  "age": 37,
+  "children": ["Sara", "Alex", "Jack"],
+  "fav.movie": "Deer Hunter",
+  "friends": [
+    {
+      "first": "Janet",
+      "last": "Murphy",
+      "age": 44
+    }
+  ]
+}
+```
+
+## Color
+
+颜色将为输出到屏幕的 json 着色。
+```json
+result = PrettyUtils.Color(json, nil)
+```
+
+将为打印到终端的结果添加颜色。
+第二个参数用于自定义样式，传递 nil 将使用默认的 `pretty.TerminalStyle`。
+## Ugly
+
+以下代码：
+```go
+result = PrettyUtils.Ugly(example)
+```
+
+将 json 格式化为：
+
+```json
+{"name":{"first":"Tom","last":"Anderson"},"age":37,"children":["Sara","Alex","Jack"],"fav.movie":"Deer Hunter","friends":[{"first":"Janet","last":"Murphy","age":44}]}```
+```
+
+## 定制输出
+
+有一个 `PrettyOptions(json, opts)` 函数，它允许使用以下选项自定义输出：
+```go
+type Options struct {
+    // 宽度是单行数组的最大列宽
+    // 默认值为 80
+	Width int
+    // 前缀是所有行的前缀
+    // 默认为空字符串
+	Prefix string
+	// Indent 是嵌套的缩进
+	// 默认为两个空格
+	Indent string
+	// SortKeys 将按字母顺序对键进行排序
+	// 默认为假
+	SortKeys bool
+}
+```
+
+

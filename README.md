@@ -1137,3 +1137,290 @@ return err
 }
 ```
 
+TreeUtils 
+====== 
+The quick menu tree generation is realized in gotool, including the selected state, half-selected state of the menu node, and the search of the menu.
+
+### The tool provides two methods
+
+#### 1、gotool.TreeUtils.GenerateTree(nodes, selectedNodes []INode) (trees []Tree)
+
+The `GenerateTree` custom structure implements the `INode` interface and calls this method to generate the tree structure.
+
+#### 2、gotool.TreeUtils.FindRelationNode(nodes, allNodes []INode) (respNodes []INode) 
+
+`FindRelationNode` queries all the parent and child nodes of the node in `nodes` in `allNodes` Return `respNodes` (including `nodes`, and all its parent and child nodes)
+
+#### Test code
+```go
+package test
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/druidcaesa/gotool"
+	"github.com/druidcaesa/gotool/pretty"
+	"github.com/druidcaesa/gotool/tree"
+	"testing"
+)
+
+// Define our own menu object
+type SystemMenu struct {
+	Id    int    `json:"id"`    //id
+	Pid   int    `json:"pid"`   //Upper menu id
+	Name  string `json:"name"`  //Menu name
+	Route string `json:"route"` //Page path
+	Icon  string `json:"icon"`  //Icon path
+}
+
+// region Implement all interfaces of ITree
+func (s SystemMenu) GetTitle() string {
+	return s.Name
+}
+
+func (s SystemMenu) GetId() int {
+	return s.Id
+}
+
+func (s SystemMenu) GetPid() int {
+	return s.Pid
+}
+
+func (s SystemMenu) GetData() interface{} {
+	return s
+}
+
+func (s SystemMenu) IsRoot() bool {
+	// Here, FatherId is equal to 0 or FatherId is equal to its own Id to indicate the top-level root node
+	return s.Pid == 0 || s.Pid == s.Id
+}
+
+// endregion
+
+type SystemMenus []SystemMenu
+
+// ConvertToINodeArray Convert the current array to the parent INode interface array
+func (s SystemMenus) ConvertToINodeArray() (nodes []tree.INode) {
+	for _, v := range s {
+		nodes = append(nodes, v)
+	}
+	return
+}
+
+func TestGenerateTree(t *testing.T) {
+	// Simulate to obtain all the menus in the database. In all other queries, first query all the data in the database and put them in the array.
+	// The subsequent traversal and recursion are all performed in this allMenu instead of recursive query in the database to reduce database pressure.
+	allMenu := []SystemMenu{
+		{Id: 1, Pid: 0, Name: "SystemOverview", Route: "/systemOverview", Icon: "icon-system"},
+		{Id: 2, Pid: 0, Name: "SystemConfiguration", Route: "/systemConfig", Icon: "icon-config"},
+
+		{Id: 3, Pid: 1, Name: "assets", Route: "/asset", Icon: "icon-asset"},
+		{Id: 4, Pid: 1, Name: "MovingRing", Route: "/pe", Icon: "icon-pe"},
+
+		{Id: 5, Pid: 2, Name: "MenuConfiguration", Route: "/menuConfig", Icon: "icon-menu-config"},
+		{Id: 6, Pid: 3, Name: "equipment", Route: "/device", Icon: "icon-device"},
+		{Id: 7, Pid: 3, Name: "Cabinet", Route: "/device", Icon: "icon-device"},
+	}
+
+	// Complete cabinet generation tree
+	resp := gotool.TreeUtils.GenerateTree(SystemMenus.ConvertToINodeArray(allMenu), nil)
+	bytes, _ := json.MarshalIndent(resp, "", "\t")
+	// Simulate selecting the'Assets' menu
+	selectedNode := []SystemMenu{allMenu[2]}
+	resp = gotool.TreeUtils.GenerateTree(SystemMenus.ConvertToINodeArray(allMenu), SystemMenus.ConvertToINodeArray(selectedNode))
+	bytes, _ = json.Marshal(resp)
+	// Simulate querying the'equipment' from the database
+	device := []SystemMenu{allMenu[5]}
+	// Query all parent nodes of the device
+	respNodes := gotool.TreeUtils.FindRelationNode(SystemMenus.ConvertToINodeArray(device), SystemMenus.ConvertToINodeArray(allMenu))
+	resp = gotool.TreeUtils.GenerateTree(respNodes, nil)
+	bytes, _ = json.Marshal(resp)
+	fmt.Println(string(pretty.Color(pretty.PrettyOptions(bytes, pretty.DefaultOptions), nil)))
+}
+```
+- Output structure`
+```json
+[
+  {
+    "title": "SystemOverview",
+    "data": {
+      "id": 1,
+      "pid": 0,
+      "name": "SystemOverview",
+      "route": "/systemOverview",
+      "icon": "icon-system"
+    },
+    "leaf": false,
+    "checked": false,
+    "partiallySelected": false,
+    "children": [
+      {
+        "title": "assets",
+        "data": {
+          "id": 3,
+          "pid": 1,
+          "name": "assets",
+          "route": "/asset",
+          "icon": "icon-asset"
+        },
+        "leaf": false,
+        "checked": false,
+        "partiallySelected": false,
+        "children": [
+          {
+            "title": "equipment",
+            "data": {
+              "id": 6,
+              "pid": 3,
+              "name": "equipment",
+              "route": "/device",
+              "icon": "icon-device"
+            },
+            "leaf": true,
+            "checked": false,
+            "partiallySelected": false,
+            "children": null
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+##### Thanks for this feature [azhengyongqin](https://github.com/azhengyongqin/golang-tree-menu)
+
+DesensitizedUtils
+======
+In data processing or cleaning, a lot of desensitization of private information may be involved, so gotool encapsulates some desensitization methods for commonly used information.
+
+### Provide two methods
+
+#### 1、gotool.DesensitizedUtils.DefaultDesensitized(str string) (result string)
+
+- Desensitization of Chinese ID cards, mobile phones, and ID cards
+- General mailbox desensitization
+
+```go
+func TestDesensitized(t *testing.T) {
+	//mail desensitization
+	mail := "testhello@gmail.com"
+	star := gotool.DesensitizedUtils.DefaultDesensitized(mail)
+	fmt.Println("mail-------------------->", star)
+	//phone desensitization
+	phone := "13333333333"
+	desensitized := gotool.DesensitizedUtils.DefaultDesensitized(phone)
+	fmt.Println("phone------------------->", desensitized)
+}
+//out
+=== RUN   TestDesensitized
+mail--------------------> tes***@gmail.com
+phone-------------------> 133****3333
+--- PASS: TestDesensitized (0.00s)
+PASS
+```
+
+#### 1、gotool.DesensitizedUtils.CustomizeHash(str string, start int, end int) string
+
+- Custom desensitization
+- `str` data to be desensitized
+- `start` start position
+- `end` end position
+
+```go
+func TestDesensitized(t *testing.T) {
+	//customize desensitization
+	customize := "sadasdasdkljkldfjlkdjflkjsdf"
+	hideStar := gotool.DesensitizedUtils.CustomizeHash(customize, 4, 14)
+	fmt.Println("customize--------------->", hideStar)
+}
+//out
+=== RUN   TestDesensitized
+customize---------------> sada**********dfjlkdjflkjsdf
+--- PASS: TestDesensitized (0.00s)
+PASS
+```
+PrettyUtils
+=======
+PrettyUtils is a gotool package that provides  methods for formatting JSON for human readability, or to compact JSON for smaller payloads.
+
+### Pretty
+Using this example:
+```json
+{"name":  {"first":"Tom","last":"Anderson"},  "age":37,
+"children": ["Sara","Alex","Jack"],
+"fav.movie": "Deer Hunter", "friends": [
+    {"first": "Janet", "last": "Murphy", "age": 44}
+  ]}
+```
+
+The following code:
+```go
+result = pretty.Pretty(example)
+```
+
+Will format the json to:
+
+```json
+{
+  "name": {
+    "first": "Tom",
+    "last": "Anderson"
+  },
+  "age": 37,
+  "children": ["Sara", "Alex", "Jack"],
+  "fav.movie": "Deer Hunter",
+  "friends": [
+    {
+      "first": "Janet",
+      "last": "Murphy",
+      "age": 44
+    }
+  ]
+}
+```
+
+## Color
+
+Color will colorize the json for outputing to the screen.
+
+```json
+result = pretty.Color(json, nil)
+```
+
+Will add color to the result for printing to the terminal.
+The second param is used for a customizing the style, and passing nil will use the default `pretty.TerminalStyle`.
+
+## Ugly
+
+The following code:
+```go
+result = pretty.Ugly(example)
+```
+
+Will format the json to:
+
+```json
+{"name":{"first":"Tom","last":"Anderson"},"age":37,"children":["Sara","Alex","Jack"],"fav.movie":"Deer Hunter","friends":[{"first":"Janet","last":"Murphy","age":44}]}```
+```
+
+## Customized output
+
+There's a `PrettyOptions(json, opts)` function which allows for customizing the output with the following options:
+
+```go
+type Options struct {
+	// Width is an max column width for single line arrays
+	// Default is 80
+	Width int
+	// Prefix is a prefix for all lines
+	// Default is an empty string
+	Prefix string
+	// Indent is the nested indentation
+	// Default is two spaces
+	Indent string
+	// SortKeys will sort the keys alphabetically
+	// Default is false
+	SortKeys bool
+}
+```
+
