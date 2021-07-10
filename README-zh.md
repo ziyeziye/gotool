@@ -5,8 +5,8 @@ gotool是一个小而全的Golang工具集，主要是将日常开发中常用�
 
 ### 简体中文 [English](README.md)
 # 请关注
-[https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
-[https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
+- [https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
+- [https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
 
 ## 2021-7-9更新内容详细使用请看文档
 

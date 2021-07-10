@@ -5,8 +5,8 @@ GoTool is a small and complete Golang tool set. It mainly refines and integrates
 If you feel OK, please click STAR
 ### English [简体中文](./README-zh.md)
 # Please pay attention
-[https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
-[https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
+- [https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
+- [https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
 ## Please see the documentation for detailed use of 2021-7-9 updates
 
 - Add file IO manipulation tool FileUtils
