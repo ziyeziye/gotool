@@ -1,6 +1,12 @@
 gotool
 =======
 gotool是一个小而全的Golang工具集，主要是将日常开发中常用的到方法进行提炼集成，避免重复造轮子，提高工作效率，每一个方法都是作者经过工作经验，和从以往的项目中提炼出来的。
+如果您觉得这个工具好用，请给个star谢谢
+
+### 简体中文 [English](./README-EN.md) 
+# 请关注
+[https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
+[https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
 
 ## 2021-7-9更新内容详细使用请看文档
 
