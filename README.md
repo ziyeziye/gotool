@@ -3,7 +3,7 @@ gotool
 GoTool is a small and complete Golang tool set. It mainly refines and integrates the commonly used methods in daily development to avoid repeating the wheel and improve work efficiency. Each method is extracted from the author's work experience and previous projects.
 
 If you feel OK, please click STAR
-### English [简体中文](./README.zh.md)
+### English [简体中文](./README-zh.md)
 # Please pay attention
 [https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
 [https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
