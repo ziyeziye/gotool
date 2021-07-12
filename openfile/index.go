@@ -2,6 +2,7 @@ package openfile
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -18,6 +19,15 @@ func (FileUtils) Exists(path string) bool {
 		return false
 	}
 	return true
+}
+
+// Create 创建文件
+func Create(path string) {
+	f, err := os.Create(path)
+	defer f.Close()
+	if err != nil {
+		log.Fatalf("db connect error: %#v\n", err.Error())
+	}
 }
 
 // IsDir 判断所给路径是否为文件夹
