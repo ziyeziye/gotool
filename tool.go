@@ -5,6 +5,7 @@ import (
 	"github.com/druidcaesa/gotool/bcrypt"
 	"github.com/druidcaesa/gotool/captcha"
 	"github.com/druidcaesa/gotool/compression"
+	"github.com/druidcaesa/gotool/conversion"
 	"github.com/druidcaesa/gotool/convert"
 	"github.com/druidcaesa/gotool/date"
 	"github.com/druidcaesa/gotool/desensitized"
@@ -41,4 +42,5 @@ var (
 	DesensitizedUtils desensitized.Desensitized //敏感数据脱敏
 	TreeUtils         tree.Tree                 //菜单树结构化工具
 	PrettyUtils       pretty.PrettyUtils        //JSON打印格式化工具
+	TypeConversion    conversion.Conversion     //类型转换，用于string，int，int64，float等数据转换，免去err的接收，和设置默认值
 )

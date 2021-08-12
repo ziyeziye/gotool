@@ -9,7 +9,7 @@ import (
 
 func TestGenerate(t *testing.T) {
 	//进行加密
-	generate := gotool.BcryptUtils.Generate("123456789")
+	generate := gotool.BcryptUtils.Generate("admin123")
 	fmt.Println(generate)
 	//进行加密对比
 	hash := gotool.BcryptUtils.CompareHash(generate, "123456789")
