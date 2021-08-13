@@ -19,6 +19,10 @@ If you feel OK, please click STAR
 -  Add the menu tree data formatting tool TreeUtils
 -  Add JSON output beautification tool PrettyUtils
 
+## 2021-8-12 Please refer to the document for detailed usage of the updated content
+
+- Add type conversion tool TypeConversion
+
 ### How to use gotool?
 
 ### installation
@@ -33,6 +37,57 @@ go.mod github.com/druidcaesa/gotool
 import "github.com/druidcaesa/gotool"
 ```
 
+TypeConversion
+======= 
+Type conversion tool, mainly used for string, int, float type conversion, err is internally processed, and default values can be set to avoid frequent err operations
+#### 1、StrToInt String type to int type, there are two parameters, str->the string to be converted, defaultNum default value, when an exception occurs, it can directly return to the default value, no default value returns 0
+```go
+func TestStrToInt(t *testing.T) {
+	toInt := gotool.TypeConversion.StrToInt("32e", 56)
+	fmt.Println("An exception occurs, return to the default value：", toInt)
+	toInt = gotool.TypeConversion.StrToInt("32e")
+	fmt.Println("An exception occurred, no default value：", toInt)
+}
+//out
+=== RUN   TestStrToInt
+An exception occurs, return to the default value： 56
+An exception occurred, no default value： 0
+--- PASS: TestStrToInt (0.00s)
+PASS
+```
+#### 2、IntToStr Int type to string, can pass int, int64, int32
+
+```go
+func TestIntToStr(t *testing.T) {
+	var num int64 = 1344
+	str := gotool.TypeConversion.IntToStr(num)
+	fmt.Println("int64 to string",str)
+	str = gotool.TypeConversion.IntToStr("num")
+	fmt.Println("Enter the string directly, and the string will be returned directly",str)
+}
+//out
+=== RUN   TestIntToStr
+int64 to string 1344
+Enter the string directly, and the string will be returned directly num
+--- PASS: TestIntToStr (0.00s)
+PASS
+```
+#### 3、StrToFloat64 The string is converted to float64 type, the default value can be passed, if an exception occurs, the default value will be returned, and no default value will be returned to 0
+
+```go
+func TestStrToFloat64(t *testing.T) {
+	toFloat32 := gotool.TypeConversion.StrToFloat32("12.78")
+	fmt.Println(toFloat32)
+	toFloat32 = gotool.TypeConversion.StrToFloat32("12.78e")
+	fmt.Println(toFloat32)
+}
+//out
+=== RUN   TestStrToFloat64
+12.78
+0
+--- PASS: TestStrToFloat64 (0.00s)
+PASS
+```
 StrUtils
 =======
 Golang is a string commonly used tool set, which basically covers the tools that are often used in development, and is currently in the process of misconduct.

@@ -20,6 +20,10 @@ gotool是一个小而全的Golang工具集，主要是将日常开发中常用�
  - 添加菜单树数据格式化工具TreeUtils 
  - 添加JSON输出美化工具PrettyUtils
 
+## 2021-8-12更新内容详细使用请看文档
+
+- 添加类型转换工具TypeConversion
+
 ### 如何使用gotool呢？
 
 ### 安装
@@ -32,6 +36,59 @@ go.mod github.com/druidcaesa/gotool
 
 ```go
 import "github.com/druidcaesa/gotool"
+```
+
+TypeConversion
+======= 
+类型转换工具，主要进行string，int，float类型转换使用，将err进行内部处理，可设置默认值，避免频繁的进行err操作
+
+#### 1、StrToInt 字符串类型转int类型，有两个参数，str->需要转换的字符串，defaultNum 默认值，当出现异常可以直接返回默认值，没有默认值返回0 
+```go
+func TestStrToInt(t *testing.T) {
+	toInt := gotool.TypeConversion.StrToInt("32e", 56)
+	fmt.Println("出现异常，返回默认值：", toInt)
+	toInt = gotool.TypeConversion.StrToInt("32e")
+	fmt.Println("出现异常，无默认值：", toInt)
+}
+//out
+=== RUN   TestStrToInt
+出现异常，返回默认值： 56
+出现异常，无默认值： 0
+--- PASS: TestStrToInt (0.00s)
+PASS
+```
+#### 2、IntToStr int类型转string，可传int、int64、int32 
+
+```go
+func TestIntToStr(t *testing.T) {
+	var num int64 = 1344
+	str := gotool.TypeConversion.IntToStr(num)
+	fmt.Println("int64转字符串",str)
+	str = gotool.TypeConversion.IntToStr("num")
+	fmt.Println("直接输入字符串，会直接将字符串返回",str)
+}
+//out
+=== RUN   TestIntToStr
+int64转字符串 1344
+直接输入字符串，会直接将字符串返回 num
+--- PASS: TestIntToStr (0.00s)
+PASS
+```
+#### 3、StrToFloat64 字符串转float64类型，可传默认值，若出现异常会将默认值返回,无默认值返回0
+
+```go
+func TestStrToFloat64(t *testing.T) {
+	toFloat32 := gotool.TypeConversion.StrToFloat32("12.78")
+	fmt.Println(toFloat32)
+	toFloat32 = gotool.TypeConversion.StrToFloat32("12.78e")
+	fmt.Println(toFloat32)
+}
+//out
+=== RUN   TestStrToFloat64
+12.78
+0
+--- PASS: TestStrToFloat64 (0.00s)
+PASS
 ```
 
 StrUtils

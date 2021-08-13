@@ -34,6 +34,21 @@ func (c Conversion) StrToInt64(strNum string, defaultNum ...int64) int64 {
 	return num
 }
 
+// StrToInt32 StrNum需要转换的字符串
+//defaultNum默认值
+//String类型转int64
+func (c Conversion) StrToInt32(strNum string, defaultNum ...int32) int32 {
+	num, err := strconv.ParseInt(strNum, 10, 32)
+	if err != nil {
+		if len(defaultNum) > 0 {
+			return defaultNum[0]
+		} else {
+			return 0
+		}
+	}
+	return int32(num)
+}
+
 // StrToFloat32 String转float32位
 //strFloat 需要转的字符串
 //defaultFloat 默认值，若没有出现转换异常直接返回0.0
@@ -73,6 +88,12 @@ func (c Conversion) IntToStr(num interface{}) string {
 		str = strconv.Itoa(num.(int))
 	case int64:
 		str = strconv.FormatInt(num.(int64), 10)
+	case int32:
+		str = strconv.FormatInt(int64(num.(int32)), 10)
+	case string:
+		str = num.(string)
+	default:
+		str = ""
 	}
 	return str
 }
