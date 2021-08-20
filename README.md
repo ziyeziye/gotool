@@ -948,21 +948,6 @@ A simple "HTTP request" package for golang `GET` `POST` `DELETE` `PUT`
 
 ### How do we use HttpUtils?
 
-```go
-resp, err := gotool.HttpUtils.Get("http://127.0.0.1:8000")
-resp, err := gotool.HttpUtils.SetTimeout(5).Get("http://127.0.0.1:8000")
-resp, err := gotool.HttpUtils.Debug(true).SetHeaders(map[string]string{}).Get("http://127.0.0.1:8000")
-
-OR
-
-req := gotool.HttpUtils.NewRequest()
-req := gotool.HttpUtils.NewRequest().Debug(true).SetTimeout(5)
-resp, err := req.Get("http://127.0.0.1:8000")
-resp, err := req.Get("http://127.0.0.1:8000",nil)
-resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest")
-resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest", "address=beijing")
-
-```
 
 #### Set request header
 
@@ -996,19 +981,6 @@ gotool.HttpUtils.SetCookies(map[string]string{
 
 ```go
 req.SetTimeout(5) //default 30s
-```
-
-#### Object-oriented operation mode
-
-```go
-req := gotool.HttpUtils.NewRequest().
-Debug(true).
-SetHeaders(map[string]string{
-"Content-Type": "application/x-www-form-urlencoded",
-}).SetTimeout(5)
-resp, err := req.Get("http://127.0.0.1")
-
-resp,err := gotool.HttpUtils.NewRequest().Get("http://127.0.0.1")
 ```
 
 ### GET

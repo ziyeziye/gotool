@@ -948,23 +948,6 @@ HttpUtils
 
 golang 的一个简单的“HTTP 请求”包 `GET` `POST` `DELETE` `PUT`
 
-### 我们如何使用HttpUtils？
-
-```go
-resp, err := gotool.HttpUtils.Get("http://127.0.0.1:8000")
-resp, err := gotool.HttpUtils.SetTimeout(5).Get("http://127.0.0.1:8000")
-resp, err := gotool.HttpUtils.Debug(true).SetHeaders(map[string]string{}).Get("http://127.0.0.1:8000")
-
-OR
-
-req := gotool.HttpUtils.NewRequest()
-req := gotool.HttpUtils.NewRequest().Debug(true).SetTimeout(5)
-resp, err := req.Get("http://127.0.0.1:8000")
-resp, err := req.Get("http://127.0.0.1:8000",nil)
-resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest")
-resp, err := req.Get("http://127.0.0.1:8000?id=10&title=HttpRequest", "address=beijing")
-
-```
 
 #### 设置请求头
 
@@ -995,22 +978,8 @@ gotool.HttpUtils.SetCookies(map[string]string{
 ```
 
 #### 设置超时时间
-
 ```go
 req.SetTimeout(5) //default 30s
-```
-
-#### 面向对象的操作模式
-
-```go
-req := gotool.HttpUtils.NewRequest().
-Debug(true).
-SetHeaders(map[string]string{
-"Content-Type": "application/x-www-form-urlencoded",
-}).SetTimeout(5)
-resp, err := req.Get("http://127.0.0.1")
-
-resp,err := gotool.HttpUtils.NewRequest().Get("http://127.0.0.1")
 ```
 
 ### GET
