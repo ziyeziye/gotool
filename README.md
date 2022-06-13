@@ -1,5 +1,5 @@
 # Due to design reasons, this library has stopped updating and maintenance, and a new tool library will be launched in the future
-gotool
+gotool migrated to [address](https://github.com/druidcaesa/ztool)
 =======
 GoTool is a small and complete Golang tool set. It mainly refines and integrates the commonly used methods in daily development to avoid repeating the wheel and improve work efficiency. Each method is extracted from the author's work experience and previous projects.
 
