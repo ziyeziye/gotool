@@ -84,29 +84,44 @@ func Transport(v *http.Transport) *Request {
 
 // Get is a get http request
 func Get(url string, data ...interface{}) (string, error) {
-	r := NewRequest()
-	return r.Get(url, data...)
+	response, err := NewRequest().Get(url, data...)
+	if err != nil {
+		return "", err
+	}
+	return response.Content()
 }
 
 func Post(url string, data ...interface{}) (string, error) {
-	r := NewRequest()
-	return r.Post(url, data...)
+	response, err := NewRequest().Post(url, data...)
+	if err != nil {
+		return "", err
+	}
+	return response.Content()
 }
 
 // Put is a put http request
 func Put(url string, data ...interface{}) (string, error) {
-	r := NewRequest()
-	return r.Put(url, data...)
+	response, err := NewRequest().Put(url, data...)
+	if err != nil {
+		return "", err
+	}
+	return response.Content()
 }
 
 // Delete is a delete http request
 func Delete(url string, data ...interface{}) (string, error) {
-	r := NewRequest()
-	return r.Delete(url, data...)
+	response, err := NewRequest().Delete(url, data...)
+	if err != nil {
+		return "", err
+	}
+	return response.Content()
 }
 
 // Upload file
 func Upload(url, filename, fileinput string) (string, error) {
-	r := NewRequest()
-	return r.Upload(url, filename, fileinput)
+	response, err := NewRequest().Upload(url, filename, fileinput)
+	if err != nil {
+		return "", err
+	}
+	return response.Content()
 }

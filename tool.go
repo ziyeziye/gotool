@@ -32,7 +32,7 @@ var (
 	BcryptUtils       bcrypt.BcryptUtil         //加密工具声明
 	DateUtil          date.Date                 //时间操作
 	StrUtils          str.StrUtils              //字符串操作
-	HttpUtils         request.Request           //http工具
+	HttpUtils         = request.NewRequest()    //http工具
 	ConvertUtils      convert.Convert           //公历转农历相关操作
 	PageUtils         page.Page                 //分页插件
 	IdUtils           id_utils.IdUtils          //id生成工具

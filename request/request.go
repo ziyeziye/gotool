@@ -307,98 +307,28 @@ func (r *Request) log() {
 }
 
 // get is a get http request
-func (r *Request) get(url string, data ...interface{}) (*Response, error) {
-	return r.request(http.MethodGet, url, data...)
+func (r *Request) Get(url string, data ...interface{}) (*Response, error) {
+	return r.request(http.MethodGet, strings.TrimSpace(url), data...)
 }
 
 // post is a post http request
-func (r *Request) post(url string, data ...interface{}) (*Response, error) {
-	return r.request(http.MethodPost, url, data...)
+func (r *Request) Post(url string, data ...interface{}) (*Response, error) {
+	return r.request(http.MethodPost, strings.TrimSpace(url), data...)
 }
 
 // put is a put http request
-func (r *Request) put(url string, data ...interface{}) (*Response, error) {
-	return r.request(http.MethodPut, url, data...)
+func (r *Request) Put(url string, data ...interface{}) (*Response, error) {
+	return r.request(http.MethodPut, strings.TrimSpace(url), data...)
 }
 
 // delete is a delete http request
-func (r *Request) delete(url string, data ...interface{}) (*Response, error) {
-	return r.request(http.MethodDelete, url, data...)
+func (r *Request) Delete(url string, data ...interface{}) (*Response, error) {
+	return r.request(http.MethodDelete, strings.TrimSpace(url), data...)
 }
 
 // Upload file
-func (r *Request) upload(url, filename, fileinput string) (*Response, error) {
-	return r.sendFile(url, filename, fileinput)
-}
-
-// Get is a get http request
-func (r *Request) Get(url string, data ...interface{}) (string, error) {
-	request, err := r.request(http.MethodGet, strings.TrimSpace(url), data...)
-	if err != nil {
-		return "", err
-	}
-	body, err := request.Body()
-	if err != nil {
-		return "", err
-	}
-	s := string(body)
-	return s, nil
-}
-
-// Post is a post http request
-func (r *Request) Post(url string, data ...interface{}) (string, error) {
-	request, err := r.request(http.MethodPost, strings.TrimSpace(url), data...)
-	if err != nil {
-		return "", err
-	}
-	body, err := request.Body()
-	if err != nil {
-		return "", err
-	}
-	s := string(body)
-	return s, nil
-}
-
-// Put is a put http request
-func (r *Request) Put(url string, data ...interface{}) (string, error) {
-	request, err := r.request(http.MethodPut, strings.TrimSpace(url), data...)
-	if err != nil {
-		return "", err
-	}
-	body, err := request.Body()
-	if err != nil {
-		return "", err
-	}
-	s := string(body)
-	return s, nil
-}
-
-// Delete is a delete http request
-func (r *Request) Delete(url string, data ...interface{}) (string, error) {
-	request, err := r.request(http.MethodDelete, strings.TrimSpace(url), data...)
-	if err != nil {
-		return "", err
-	}
-	body, err := request.Body()
-	if err != nil {
-		return "", err
-	}
-	s := string(body)
-	return s, nil
-}
-
-// Upload file
-func (r *Request) Upload(url, filename, fileinput string) (string, error) {
-	file, err := r.sendFile(strings.TrimSpace(url), filename, fileinput)
-	if err != nil {
-		return "", err
-	}
-	body, err := file.Body()
-	if err != nil {
-		return "", err
-	}
-	s := string(body)
-	return s, nil
+func (r *Request) Upload(url, filename, fileinput string) (*Response, error) {
+	return r.sendFile(strings.TrimSpace(url), filename, fileinput)
 }
 
 // Send http request

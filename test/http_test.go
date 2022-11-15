@@ -7,10 +7,10 @@ import (
 )
 
 func TestGet(t *testing.T) {
-	get, err := gotool.HttpUtils.Debug(true).Get("http://192.168.1.115:8080/user/list ")
+	get, err := gotool.HttpUtils.Debug(true).Get("http://www.baidu.com")
 	if err != nil {
 		gotool.Logs.ErrorLog().Println(err)
 	}
-	s := string(get)
+	s, _ := get.Content()
 	fmt.Println(s)
 }
