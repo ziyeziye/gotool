@@ -3,8 +3,8 @@ package id_utils
 import (
 	"errors"
 	"fmt"
-	"github.com/druidcaesa/gotool/str"
 	"github.com/google/uuid"
+	"github.com/ziyeziye/gotool/str"
 	"math"
 	"math/rand"
 	"strconv"

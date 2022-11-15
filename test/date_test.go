@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/druidcaesa/gotool"
+	"github.com/ziyeziye/gotool"
 	"testing"
 	"time"
 )
@@ -48,7 +48,7 @@ func TestGetWeekDay(t *testing.T) {
 	fmt.Println("今天是-----------------周", day)
 }
 
-//时间计算
+// 时间计算
 func TestTimeAddOrSub(t *testing.T) {
 	now := gotool.DateUtil.Now()
 	fmt.Println("现在时间是--------------------->", now)

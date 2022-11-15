@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/druidcaesa/gotool"
+	"github.com/ziyeziye/gotool"
 	"os"
 	"testing"
 )

@@ -5,7 +5,7 @@ gotool是一个小而全的Golang工具集，主要是将日常开发中常用�
 
 ### 简体中文 [English](README.md)
 # 请关注
-- [https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
+- [https://github.com/ziyeziye/gotool](https://github.com/ziyeziye/gotool)
 - [https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
 
 ## 2021-7-9更新内容详细使用请看文档
@@ -28,14 +28,14 @@ gotool是一个小而全的Golang工具集，主要是将日常开发中常用�
 
 ### 安装
 
-go get github.com/druidcaesa/gotool
+go get github.com/ziyeziye/gotool
 
-go.mod github.com/druidcaesa/gotool
+go.mod github.com/ziyeziye/gotool
 
 ### 引入
 
 ```go
-import "github.com/druidcaesa/gotool"
+import "github.com/ziyeziye/gotool"
 ```
 
 TypeConversion
@@ -1189,9 +1189,9 @@ package test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/druidcaesa/gotool"
-	"github.com/druidcaesa/gotool/pretty"
-	"github.com/druidcaesa/gotool/tree"
+	"github.com/ziyeziye/gotool"
+	"github.com/ziyeziye/gotool/pretty"
+	"github.com/ziyeziye/gotool/tree"
 	"testing"
 )
 

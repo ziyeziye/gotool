@@ -1,27 +1,27 @@
 package gotool
 
 import (
-	"github.com/druidcaesa/gotool/array"
-	"github.com/druidcaesa/gotool/bcrypt"
-	"github.com/druidcaesa/gotool/captcha"
-	"github.com/druidcaesa/gotool/compression"
-	"github.com/druidcaesa/gotool/conversion"
-	"github.com/druidcaesa/gotool/convert"
-	"github.com/druidcaesa/gotool/date"
-	"github.com/druidcaesa/gotool/desensitized"
-	"github.com/druidcaesa/gotool/id_utils"
-	"github.com/druidcaesa/gotool/logs"
-	"github.com/druidcaesa/gotool/openfile"
-	"github.com/druidcaesa/gotool/page"
-	"github.com/druidcaesa/gotool/pretty"
-	"github.com/druidcaesa/gotool/request"
-	"github.com/druidcaesa/gotool/str"
-	"github.com/druidcaesa/gotool/tree"
+	"github.com/ziyeziye/gotool/array"
+	"github.com/ziyeziye/gotool/bcrypt"
+	"github.com/ziyeziye/gotool/captcha"
+	"github.com/ziyeziye/gotool/compression"
+	"github.com/ziyeziye/gotool/conversion"
+	"github.com/ziyeziye/gotool/convert"
+	"github.com/ziyeziye/gotool/date"
+	"github.com/ziyeziye/gotool/desensitized"
+	"github.com/ziyeziye/gotool/id_utils"
+	"github.com/ziyeziye/gotool/logs"
+	"github.com/ziyeziye/gotool/openfile"
+	"github.com/ziyeziye/gotool/page"
+	"github.com/ziyeziye/gotool/pretty"
+	"github.com/ziyeziye/gotool/request"
+	"github.com/ziyeziye/gotool/str"
+	"github.com/ziyeziye/gotool/tree"
 )
 
 // @Title tool
 // @Description A simple, semantic and developer-friendly Golang tool development set
-// @Page github.com/druidcaesa/gotool
+// @Page github.com/ziyeziye/gotool
 // @Version v0.0.1
 // @Author druidcaesa
 // @Email hbsjzfynxm@gmail.com

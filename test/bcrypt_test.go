@@ -3,7 +3,7 @@ package test
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/druidcaesa/gotool"
+	"github.com/ziyeziye/gotool"
 	"testing"
 )
 

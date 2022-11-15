@@ -2,7 +2,7 @@ package compression
 
 import (
 	"archive/zip"
-	"github.com/druidcaesa/gotool/openfile"
+	"github.com/ziyeziye/gotool/openfile"
 	"io"
 	"log"
 	"os"
@@ -14,8 +14,8 @@ type ZipUtils struct {
 }
 
 // Compress 压缩文件
-//files 文件数组 可以是多目录文件
-//dest 压缩文件存放地址
+// files 文件数组 可以是多目录文件
+// dest 压缩文件存放地址
 func (z ZipUtils) Compress(files []*os.File, dest string) (bool, error) {
 	for _, file := range files {
 		//防止用户打开os未关闭，这里调用方法前设置结束关闭

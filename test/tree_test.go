@@ -3,8 +3,8 @@ package test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/druidcaesa/gotool"
-	"github.com/druidcaesa/gotool/tree"
+	"github.com/ziyeziye/gotool"
+	"github.com/ziyeziye/gotool/tree"
 	"testing"
 )
 

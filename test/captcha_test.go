@@ -3,7 +3,7 @@ package test
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/druidcaesa/gotool"
+	"github.com/ziyeziye/gotool"
 	"testing"
 )
 

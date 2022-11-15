@@ -6,7 +6,7 @@ GoTool is a small and complete Golang tool set. It mainly refines and integrates
 If you feel OK, please click STAR
 ### English [简体中文](./README-zh.md)
 # Please pay attention
-- [https://github.com/druidcaesa/gotool](https://github.com/druidcaesa/gotool)
+- [https://github.com/ziyeziye/gotool](https://github.com/ziyeziye/gotool)
 - [https://gitee.com/termites/gotool](https://gitee.com/termites/gotool)
 ## Please see the documentation for detailed use of 2021-7-9 updates
 
@@ -28,14 +28,14 @@ If you feel OK, please click STAR
 
 ### installation
 
-go get github.com/druidcaesa/gotool
+go get github.com/ziyeziye/gotool
 
-go.mod github.com/druidcaesa/gotool
+go.mod github.com/ziyeziye/gotool
 
 ### Introduce
 
 ```go
-import "github.com/druidcaesa/gotool"
+import "github.com/ziyeziye/gotool"
 ```
 
 TypeConversion
@@ -1191,9 +1191,9 @@ package test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/druidcaesa/gotool"
-	"github.com/druidcaesa/gotool/pretty"
-	"github.com/druidcaesa/gotool/tree"
+	"github.com/ziyeziye/gotool"
+	"github.com/ziyeziye/gotool/pretty"
+	"github.com/ziyeziye/gotool/tree"
 	"testing"
 )
 

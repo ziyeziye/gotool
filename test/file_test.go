@@ -3,7 +3,7 @@ package test
 import (
 	"bufio"
 	"fmt"
-	"github.com/druidcaesa/gotool"
+	"github.com/ziyeziye/gotool"
 	"os"
 	"testing"
 )
